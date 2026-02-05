@@ -1,0 +1,47 @@
+package com.ipartek.springboot.backend.apirest.elpisito.controllers;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
+import com.ipartek.springboot.backend.apirest.elpisito.services.UsuarioServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+@RestController
+@RequestMapping("/api")
+public class UsuarioRestController {
+
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
+
+    @GetMapping("/usuarios")
+    public List<Usuario> findAll() {
+        return usuarioService.findAll();
+    }
+
+    @GetMapping("/usuarios-activos/{active}")
+    public List<Usuario> findAllActivo(@PathVariable Integer active) {
+        return usuarioService.findAllByActivo(active);
+    }
+
+    @GetMapping("/usuario/{id}")
+    public Usuario findById(@PathVariable Long id) {
+        return usuarioService.findById(id);
+    }
+    
+    @PostMapping("/usuario")
+    public Usuario create(@RequestBody Usuario usuario) {
+        return usuarioService.save(usuario);
+    }
+    
+
+
+}
