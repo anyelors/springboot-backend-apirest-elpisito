@@ -52,7 +52,7 @@ public class Usuario implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Rol rol;
 	
-	@Column
+	@Column(nullable = false)
 	private Integer activo = 1;
 	
 }
