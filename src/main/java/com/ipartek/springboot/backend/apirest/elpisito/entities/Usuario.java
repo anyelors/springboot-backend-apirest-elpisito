@@ -14,18 +14,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name="usuarios")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-@Table(name="usuarios")
+@SuperBuilder(toBuilder = true)
 public class Usuario implements Serializable{
 
 	@Serial
@@ -48,11 +51,13 @@ public class Usuario implements Serializable{
 	@Column(unique=true, nullable = false)
 	private String email;
 
-	@Column(nullable = false)
+	@Builder.Default
+    @Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Rol rol;
+	private Rol rol = Rol.ROLE_USUARIO;
 	
-	@Column(nullable = false)
+	@Builder.Default
+    @Column(nullable = false)
 	private Integer activo = 1;
 	
 }

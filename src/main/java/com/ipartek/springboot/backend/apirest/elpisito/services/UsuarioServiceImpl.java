@@ -11,6 +11,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepos
 @Service
 public class UsuarioServiceImpl implements GeneralService<Usuario> {
 
+	//UsuarioRepository Automaticamente hereda todos los metodos de JpaRepository y metodos propios
     @Autowired
     private UsuarioRepository usuarioRepository;
 

@@ -9,9 +9,11 @@ import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
 import com.ipartek.springboot.backend.apirest.elpisito.services.UsuarioServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -40,6 +42,16 @@ public class UsuarioRestController {
     @PostMapping("/usuario")
     public Usuario create(@RequestBody Usuario usuario) {
         return usuarioService.save(usuario);
+    }
+    
+    @PutMapping("/usuario")
+    public Usuario update(@RequestBody Usuario usuario) {
+        return usuarioService.save(usuario);
+    }
+    
+    @DeleteMapping("/usuario/{id}")
+    public void deleteById(@PathVariable Long id) {
+    	usuarioService.deleteById(id);
     }
 
 }
