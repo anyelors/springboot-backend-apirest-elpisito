@@ -39,8 +39,10 @@ public class PoblacionServiceImpl implements GeneralService<Poblacion> {
 
 	@Override
 	public Poblacion deleteById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return poblacionRepository.findById(id).map(poblacion -> {
+			poblacion.setActivo(0);
+			return poblacionRepository.save(poblacion);
+		}).orElseThrow(() -> new EntityNotFoundException("La población con id " + id + " no existe"));
 	}
 
 }

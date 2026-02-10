@@ -50,14 +50,7 @@ public class PoblacionRestController {
 
 	@PutMapping("/poblacion-activate/{id}")
 	public ResponseEntity<Poblacion> delete(@PathVariable Long id) {
-		Poblacion poblacion = poblacionService.findById(id);
-
-		if (poblacion.getActivo().equals(1))
-			poblacion.setActivo(0);
-		else
-			poblacion.setActivo(1);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(poblacionService.save(poblacion));
+		return ResponseEntity.status(HttpStatus.CREATED).body(poblacionService.deleteById(id));
 	}
 
 }
