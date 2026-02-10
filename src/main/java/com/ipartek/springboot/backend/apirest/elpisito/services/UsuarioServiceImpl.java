@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UsuarioServiceImpl implements GeneralService<Usuario> {
 
@@ -29,7 +31,7 @@ public class UsuarioServiceImpl implements GeneralService<Usuario> {
 	@Override
 	public Usuario findById(Long id) {
 		return usuarioRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("El usuario con id " + id + " no existe"));
+				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe"));
 	}
 
 	@Override
@@ -39,10 +41,12 @@ public class UsuarioServiceImpl implements GeneralService<Usuario> {
 	}
 
 	@Override
-	public void deleteById(Long id) {
-		usuarioRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("El usuario con id " + id + " no existe"));
+	public Usuario deleteById(Long id) {
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe"));
 		usuarioRepository.deleteById(id);
+
+		return usuario;
 	}
 
 }

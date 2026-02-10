@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -101,6 +102,13 @@ public class ApiExceptionHandler {
 	private ResponseEntity<ErrorResponseDTO> dataAccess(DataAccessException ex, HttpServletRequest req) {
 		String elMensaje = "Fallo al intentar acceder a la BBDD.";
 		return build(HttpStatus.INTERNAL_SERVER_ERROR, elMensaje, ex, req);
+	}
+
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	private ResponseEntity<ErrorResponseDTO> httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+			HttpServletRequest req) {
+		String elMensaje = "El end point al que está intentando acceder no existe.";
+		return build(HttpStatus.METHOD_NOT_ALLOWED, elMensaje, ex, req);
 	}
 
 }

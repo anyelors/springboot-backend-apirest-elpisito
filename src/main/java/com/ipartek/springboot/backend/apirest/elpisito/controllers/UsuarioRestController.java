@@ -3,6 +3,8 @@ package com.ipartek.springboot.backend.apirest.elpisito.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,35 +26,53 @@ public class UsuarioRestController {
 	private UsuarioServiceImpl usuarioService;
 
 	@GetMapping("/usuarios")
-	public List<Usuario> findAll() {
-		return usuarioService.findAll();
+	public ResponseEntity<List<UsuarioDTO>> findAll() {
+		List<Usuario> usuario = usuarioService.findAll();
+		List<UsuarioDTO> usuariosDTO = usuario.stream()
+				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name())).toList();
+
+		return ResponseEntity.ok(usuariosDTO);
 	}
 
 	@GetMapping("/usuarios-activos/{active}")
-	public List<Usuario> findAllActivo(@PathVariable Integer active) {
-		return usuarioService.findAllByActivo(active);
+	public ResponseEntity<List<UsuarioDTO>> findAllActivo(@PathVariable Integer active) {
+		List<Usuario> usuario = usuarioService.findAllByActivo(active);
+		List<UsuarioDTO> usuariosDTO = usuario.stream()
+				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name())).toList();
+
+		return ResponseEntity.ok(usuariosDTO);
 	}
 
 	@GetMapping("/usuario/{id}")
-	public Usuario findById(@PathVariable Long id) {
-		return usuarioService.findById(id);
+	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
+		Usuario usuario = usuarioService.findById(id);
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name());
+
+		return ResponseEntity.ok(usuarioDTO);
 	}
 
 	@PostMapping("/usuario")
-	public UsuarioDTO create(@RequestBody Usuario usuario) {
+	public ResponseEntity<UsuarioDTO> create(@RequestBody Usuario usuario) {
 		Usuario usuarioF = usuarioService.save(usuario);
-		return new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name());
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name());
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 	}
 
 	@PutMapping("/usuario")
-	public UsuarioDTO update(@RequestBody Usuario usuario) {
+	public ResponseEntity<UsuarioDTO> update(@RequestBody Usuario usuario) {
 		Usuario usuarioF = usuarioService.save(usuario);
-		return new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name());
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name());
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 	}
 
 	@DeleteMapping("/usuario/{id}")
-	public void deleteById(@PathVariable Long id) {
-		usuarioService.deleteById(id);
+	public ResponseEntity<UsuarioDTO> deleteById(@PathVariable Long id) {
+		Usuario usuario = usuarioService.deleteById(id);
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name());
+
+		return ResponseEntity.ok(usuarioDTO);
 	}
 
 }
