@@ -39,10 +39,14 @@ public class PoblacionServiceImpl implements GeneralService<Poblacion> {
 
 	@Override
 	public Poblacion deleteById(Long id) {
-		return poblacionRepository.findById(id).map(poblacion -> {
+		Poblacion poblacion = findById(id);
+
+		if (poblacion.getActivo().equals(1))
 			poblacion.setActivo(0);
-			return poblacionRepository.save(poblacion);
-		}).orElseThrow(() -> new EntityNotFoundException("La población con id " + id + " no existe"));
+		else
+			poblacion.setActivo(1);
+
+		return poblacionRepository.save(poblacion);
 	}
 
 }

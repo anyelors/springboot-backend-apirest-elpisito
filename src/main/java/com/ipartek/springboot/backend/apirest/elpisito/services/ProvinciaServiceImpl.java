@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Provincia;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.ProvinciaRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ProvinciaServiceImpl implements GeneralService<Provincia> {
 
@@ -26,7 +28,7 @@ public class ProvinciaServiceImpl implements GeneralService<Provincia> {
 
     @Override
     public Provincia findById(Long id) {
-        return provinciaRepository.findById(id).orElse(null);
+        return provinciaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La provincia con id " + id + " no existe"));
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ProvinciaServiceImpl implements GeneralService<Provincia> {
 
     @Override
     public Provincia deleteById(Long id) {
-        Provincia provincia = provinciaRepository.findById(id).orElse(null);
+        Provincia provincia = findById(id);
         
         if (provincia.getActivo().equals(1))
             provincia.setActivo(0);
