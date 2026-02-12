@@ -1,16 +1,14 @@
 package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ipartek.springboot.backend.apirest.elpisito.utilities.EntidadImagen;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,28 +22,25 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "provincias")
-public class Provincia {
+@Table(name = "imagenes")
+public class Imagen {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // Incremental para MySQL
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long id;
 
-	@Column(unique = true)
+	@Column
 	private String nombre;
 
-	@Column
-	private Integer activo;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "entidad_imagen")
+	private EntidadImagen entidadaImagen;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "provincia")
-	private List<Poblacion> poblaciones;
+	@Column(name = "entidad_id")
+	private Long entidadId;
 
-	@PrePersist
-	public void prePersist() {
-		if (this.activo == null)
-			this.activo = 1;
-	}
+	@Column(name = "alt_imagen")
+	private String altImagen;
 
 }

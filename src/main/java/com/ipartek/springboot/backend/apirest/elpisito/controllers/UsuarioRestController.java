@@ -29,7 +29,7 @@ public class UsuarioRestController {
 	public ResponseEntity<List<UsuarioDTO>> findAll() {
 		List<Usuario> usuario = usuarioService.findAll();
 		List<UsuarioDTO> usuariosDTO = usuario.stream()
-				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name())).toList();
+				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name(), u.getActivo())).toList();
 
 		return ResponseEntity.ok(usuariosDTO);
 	}
@@ -38,7 +38,7 @@ public class UsuarioRestController {
 	public ResponseEntity<List<UsuarioDTO>> findAllActivo(@PathVariable Integer active) {
 		List<Usuario> usuario = usuarioService.findAllByActivo(active);
 		List<UsuarioDTO> usuariosDTO = usuario.stream()
-				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name())).toList();
+				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name(), u.getActivo())).toList();
 
 		return ResponseEntity.ok(usuariosDTO);
 	}
@@ -46,7 +46,8 @@ public class UsuarioRestController {
 	@GetMapping("/usuario/{id}")
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
 		Usuario usuario = usuarioService.findById(id);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name());
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name(),
+				usuario.getActivo());
 
 		return ResponseEntity.ok(usuarioDTO);
 	}
@@ -54,15 +55,20 @@ public class UsuarioRestController {
 	@PostMapping("/usuario")
 	public ResponseEntity<UsuarioDTO> create(@RequestBody Usuario usuario) {
 		Usuario usuarioF = usuarioService.save(usuario);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name());
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name(),
+				usuarioF.getActivo());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 	}
 
 	@PutMapping("/usuario")
 	public ResponseEntity<UsuarioDTO> update(@RequestBody Usuario usuario) {
-		Usuario usuarioF = usuarioService.save(usuario);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name());
+
+		Usuario usuarioCompleto = usuarioService.completaUsuarioRequestRespetandoNullus(usuario);
+
+		Usuario usuarioF = usuarioService.save(usuarioCompleto);
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name(),
+				usuarioF.getActivo());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 	}
@@ -70,7 +76,8 @@ public class UsuarioRestController {
 	@DeleteMapping("/usuario/{id}")
 	public ResponseEntity<UsuarioDTO> deleteById(@PathVariable Long id) {
 		Usuario usuario = usuarioService.deleteById(id);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name());
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name(),
+				usuario.getActivo());
 
 		return ResponseEntity.ok(usuarioDTO);
 	}

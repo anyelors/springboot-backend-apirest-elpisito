@@ -1,15 +1,10 @@
 package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,11 +19,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "provincias")
-public class Provincia {
+@Table(name = "inmobiliarias")
+public class Inmobiliaria {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // Incremental para MySQL
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long id;
 
@@ -36,11 +31,17 @@ public class Provincia {
 	private String nombre;
 
 	@Column
-	private Integer activo;
+	private String telefono;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "provincia")
-	private List<Poblacion> poblaciones;
+	@Column
+	private String representante;
+
+	/*
+	 * @Column private String logo;
+	 */
+
+	@Column
+	private Integer activo;
 
 	@PrePersist
 	public void prePersist() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
+import com.ipartek.springboot.backend.apirest.elpisito.utilities.UsuarioMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -17,6 +18,8 @@ public class UsuarioServiceImpl implements GeneralService<Usuario> {
 	// metodos propios
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private UsuarioMapper usuarioMapper;
 
 	@Override
 	public List<Usuario> findAll() {
@@ -47,6 +50,14 @@ public class UsuarioServiceImpl implements GeneralService<Usuario> {
 		usuarioRepository.deleteById(id);
 
 		return usuario;
+	}
+
+	public Usuario completaUsuarioRequestRespetandoNullus(Usuario usuarioRequest) {
+		Usuario usuarioBD = usuarioRepository.findById(usuarioRequest.getId()).orElseThrow(
+				() -> new EntityNotFoundException("El usuario con id " + usuarioRequest.getId() + " no existe"));
+
+		usuarioMapper.updateUsuarioFromDTO(usuarioRequest, usuarioBD);
+		return usuarioBD;
 	}
 
 }
