@@ -16,7 +16,7 @@ public class ImagenServiceImpl {
     private ImagenRepository imagenRepository;
 
 	public List<Imagen> getImagenes(EntidadImagen entidadImagen, Long id) {
-		return imagenRepository.getImagenes(entidadImagen, id);
+		return imagenRepository.findByEntidadImagenAndEntidadId(entidadImagen, id);
 	}
 
 	public Imagen findById(Long id) {

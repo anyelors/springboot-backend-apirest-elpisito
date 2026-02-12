@@ -11,6 +11,6 @@ import com.ipartek.springboot.backend.apirest.elpisito.utilities.EntidadImagen;
 @Repository
 public interface ImagenRepository extends JpaRepository<Imagen, Long> {
 
-    List<Imagen> getImagenes(EntidadImagen entidadImagen, Long id);
+    List<Imagen> findByEntidadImagenAndEntidadId(EntidadImagen entidadImagen, Long id);
 
 }

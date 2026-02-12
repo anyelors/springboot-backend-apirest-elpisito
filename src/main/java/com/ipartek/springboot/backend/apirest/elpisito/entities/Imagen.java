@@ -35,7 +35,7 @@ public class Imagen {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "entidad_imagen")
-	private EntidadImagen entidadaImagen;
+	private EntidadImagen entidadImagen;
 
 	@Column(name = "entidad_id")
 	private Long entidadId;

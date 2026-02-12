@@ -28,22 +28,42 @@ public class ImagenRestController {
 
     @GetMapping("/imagen-inmueble/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenesInmueble(@PathVariable Long id) {
-		return imagenService.getImagenes(EntidadImagen.INMUEBLE, id);
+		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.INMUEBLE, id); 
+		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
+		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getNombre(), imagen.getAltImagen()))
+		.toList();
+		
+		return ResponseEntity.ok(listaImagenesDTO);
 	}
 
     @GetMapping("/imagen-banner/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenesBanner(@PathVariable Long id) {
-		return imagenService.getImagenes(EntidadImagen.BANNER, id);
+		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.BANNER, id); 
+		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
+		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getNombre(), imagen.getAltImagen()))
+		.toList();
+		
+		return ResponseEntity.ok(listaImagenesDTO);
 	}
 
     @GetMapping("/imagen-inmobiliaria/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenesInmobiliaria(@PathVariable Long id) {
-		return imagenService.getImagenes(EntidadImagen.INMOBILIARIA, id);
+		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.INMOBILIARIA, id); 
+		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
+		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getEntidadImagen()+"/"+imagen.getId()+"/"+imagen.getNombre(), imagen.getAltImagen()))
+		.toList();
+		
+		return ResponseEntity.ok(listaImagenesDTO);
 	}
 
     @GetMapping("/imagen-banner-carousel/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenesBannerCarousel(@PathVariable Long id) {
-		return imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, id);
+		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, id); 
+		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
+		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getNombre(), imagen.getAltImagen()))
+		.toList();
+		
+		return ResponseEntity.ok(listaImagenesDTO);
 	}
 
     @PostMapping("/imagen")

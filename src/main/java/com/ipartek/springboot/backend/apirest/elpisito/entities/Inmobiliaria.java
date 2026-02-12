@@ -31,10 +31,10 @@ public class Inmobiliaria {
 	private String nombre;
 
 	@Column
-	private String telefono;
-
-	@Column
 	private String representante;
+	
+	@Column
+	private String telefono;
 
 	/*
 	 * @Column private String logo;
