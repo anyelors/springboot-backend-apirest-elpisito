@@ -26,59 +26,39 @@ public class ImagenRestController {
     @Autowired
     private ImagenServiceImpl imagenService;
 
-    @GetMapping("/imagen-inmueble/{id}")
+    @GetMapping("/imagenes-inmueble/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenesInmueble(@PathVariable Long id) {
-		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.INMUEBLE, id); 
-		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
-		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getNombre(), imagen.getAltImagen()))
-		.toList();
-		
-		return ResponseEntity.ok(listaImagenesDTO);
+		return ResponseEntity.ok(imagenService.getImagenes(EntidadImagen.INMUEBLE, id));
 	}
 
     @GetMapping("/imagen-banner/{id}")
-	public ResponseEntity<List<ImagenDTO>> findImagenesBanner(@PathVariable Long id) {
-		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.BANNER, id); 
-		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
-		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getNombre(), imagen.getAltImagen()))
-		.toList();
-		
-		return ResponseEntity.ok(listaImagenesDTO);
+	public ResponseEntity<ImagenDTO> findImagenBanner(@PathVariable Long id) {
+		return ResponseEntity.ok(imagenService.getImagen(EntidadImagen.BANNER, id));
 	}
 
-    @GetMapping("/imagen-inmobiliaria/{id}")
-	public ResponseEntity<List<ImagenDTO>> findImagenesInmobiliaria(@PathVariable Long id) {
-		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.INMOBILIARIA, id); 
-		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
-		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getEntidadImagen()+"/"+imagen.getId()+"/"+imagen.getNombre(), imagen.getAltImagen()))
-		.toList();
-		
-		return ResponseEntity.ok(listaImagenesDTO);
+    @GetMapping("/logo-inmobiliaria/{id}")
+	public ResponseEntity<ImagenDTO> findImagenInmobiliaria(@PathVariable Long id) {
+		return ResponseEntity.ok(imagenService.getImagen(EntidadImagen.INMOBILIARIA, id));
 	}
 
-    @GetMapping("/imagen-banner-carousel/{id}")
-	public ResponseEntity<List<ImagenDTO>> findImagenesBannerCarousel(@PathVariable Long id) {
-		List<Imagen> listaImagenes = imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, id); 
-		List<ImagenDTO> listaImagenesDTO = listaImagenes.stream()
-		.map(imagen -> new ImagenDTO(imagen.getId(), imagen.getNombre(), imagen.getAltImagen()))
-		.toList();
-		
-		return ResponseEntity.ok(listaImagenesDTO);
+    @GetMapping("/imagenes-banner-carousel/{id}")
+	public ResponseEntity<ImagenDTO> findImagenBannerCarousel(@PathVariable Long id) {
+		return ResponseEntity.ok(imagenService.getImagen(EntidadImagen.BANNER_CAROUSEL, id));
 	}
 
     @PostMapping("/imagen")
-	public ResponseEntity<Imagen> create(@RequestBody Imagen imagen) {
+	public ResponseEntity<ImagenDTO> create(@RequestBody Imagen imagen) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(imagenService.save(imagen));
 	}
 
     @PutMapping("/imagen")
-	public ResponseEntity<Imagen> update(@RequestBody Imagen imagen) {
+	public ResponseEntity<ImagenDTO> update(@RequestBody Imagen imagen) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(imagenService.save(imagen));
 	}
 
 	@DeleteMapping("/imagen/{id}")
-	public ResponseEntity<Imagen> delete(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(imagenService.deleteById(id));
+	public ResponseEntity<ImagenDTO> delete(@PathVariable Long id) {
+		return ResponseEntity.ok(imagenService.deleteById(id));
 	}
 
 }
