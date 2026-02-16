@@ -2,7 +2,10 @@ package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ipartek.springboot.backend.apirest.elpisito.utilities.Rol;
 
 import jakarta.persistence.Column;
@@ -12,6 +15,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -55,6 +61,13 @@ public class Usuario implements Serializable {
 
 	@Column(nullable = false)
 	private Integer activo;
+
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "usuario_inmueble", 
+				joinColumns = { @JoinColumn(name = "usuario_id") }, 
+				inverseJoinColumns = { @JoinColumn(name = "inmueble_id") })
+	private Set<Inmueble> inmueblesFavoritos;
 
 	@PrePersist
 	public void prePersist() {

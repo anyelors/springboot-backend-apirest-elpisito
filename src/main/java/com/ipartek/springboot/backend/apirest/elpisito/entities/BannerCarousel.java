@@ -1,15 +1,11 @@
 package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,23 +20,25 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "tipos")
-public class Tipo {
+@Table(name = "banners_carousel")
+public class BannerCarousel {
 
-	@Id
+    @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long id;
 
-	@Column(unique = true)
-	private String nombre;
+	@Column
+	private String titular;
 
 	@Column
+	private String claim;
+
+    @Column
 	private Integer activo;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "tipo")
-	private List<Inmueble> inmuebles;
+	@ManyToMany(mappedBy = "bannersCarousel")
+	private java.util.Set<Tematica> tematicas;
 
 	@PrePersist
 	public void prePersist() {

@@ -1,7 +1,5 @@
 package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -9,7 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,10 +23,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "tipos")
-public class Tipo {
+@Table(name = "tematicas")
+public class Tematica {
 
-	@Id
+    @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long id;
@@ -38,9 +37,12 @@ public class Tipo {
 	@Column
 	private Integer activo;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "tipo")
-	private List<Inmueble> inmuebles;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "tematica_bannercarousel", 
+        joinColumns = { @jakarta.persistence.JoinColumn(name = "tematica_id") }, 
+        inverseJoinColumns = { @jakarta.persistence.JoinColumn(name = "banner_carousel_id") })
+    private java.util.Set<BannerCarousel> bannersCarousel;
 
 	@PrePersist
 	public void prePersist() {
