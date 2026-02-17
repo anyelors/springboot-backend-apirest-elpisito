@@ -16,4 +16,7 @@ public interface ImagenRepository extends JpaRepository<Imagen, Long> {
 
     Optional<Imagen> findFirstByEntidadImagenAndEntidadId(EntidadImagen entidadImagen, Long id);
 
+    //In -> Busca por una lista de ids
+    List<Imagen> findByEntidadImagenAndEntidadIdIn(EntidadImagen entidadImagen, List<Long> ids);
+
 }

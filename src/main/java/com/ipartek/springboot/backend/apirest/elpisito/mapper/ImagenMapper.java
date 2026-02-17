@@ -1,4 +1,4 @@
-package com.ipartek.springboot.backend.apirest.elpisito.utilities;
+package com.ipartek.springboot.backend.apirest.elpisito.mapper;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface ImagenMapper {
     List<ImagenDTO> toDTOList(List<Imagen> imagenes);
 
     default String construirUrl(Imagen imagen) {
-        return "/api/imagenes/" + imagen.getEntidadImagen() + "/" + imagen.getEntidadId() + "/" + imagen.getNombre();
+        return "/api/imagenes/" + imagen.getEntidadImagen().name().toLowerCase() + "/" + imagen.getEntidadId() + "/" + imagen.getNombre();
     }
 
 }

@@ -2,7 +2,6 @@ package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

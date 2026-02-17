@@ -1,4 +1,4 @@
-package com.ipartek.springboot.backend.apirest.elpisito.utilities;
+package com.ipartek.springboot.backend.apirest.elpisito.mapper;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

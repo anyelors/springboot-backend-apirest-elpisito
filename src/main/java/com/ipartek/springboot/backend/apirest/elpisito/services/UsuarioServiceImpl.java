@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
+import com.ipartek.springboot.backend.apirest.elpisito.mapper.UsuarioMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
-import com.ipartek.springboot.backend.apirest.elpisito.utilities.UsuarioMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 
