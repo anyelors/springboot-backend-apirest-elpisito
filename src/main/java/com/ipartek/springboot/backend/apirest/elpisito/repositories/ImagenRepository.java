@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Imagen;
-import com.ipartek.springboot.backend.apirest.elpisito.utilities.EntidadImagen;
+import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
 
 @Repository
 public interface ImagenRepository extends JpaRepository<Imagen, Long> {
@@ -16,7 +16,7 @@ public interface ImagenRepository extends JpaRepository<Imagen, Long> {
 
     Optional<Imagen> findFirstByEntidadImagenAndEntidadId(EntidadImagen entidadImagen, Long id);
 
-    //In -> Busca por una lista de ids
+    //In -> Busca por una lista de valores
     List<Imagen> findByEntidadImagenAndEntidadIdIn(EntidadImagen entidadImagen, List<Long> ids);
 
 }

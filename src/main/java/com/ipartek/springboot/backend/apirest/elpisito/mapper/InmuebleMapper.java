@@ -12,23 +12,23 @@ import org.mapstruct.MappingTarget;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.ImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmuebleImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmueble;
+import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
 import com.ipartek.springboot.backend.apirest.elpisito.services.ImagenServiceImpl;
-import com.ipartek.springboot.backend.apirest.elpisito.utilities.EntidadImagen;
 
 @Mapper(componentModel = "spring")
 public interface InmuebleMapper {
 
     @Mapping(target = "imagenes", ignore = true)
-    InmuebleImagenDTO toDTO(Inmueble inmueble, @Context ImagenServiceImpl imagenService);
+    InmuebleImagenDTO toDto(Inmueble inmueble, @Context ImagenServiceImpl imagenService);
 
     List<InmuebleImagenDTO> toDTOList(List<Inmueble> inmuebles, @Context ImagenServiceImpl imagenService);
 
     default List<InmuebleImagenDTO> toDtoBulk(List<Inmueble> inmuebles, Map<Long, List<ImagenDTO>> imagenesMap) {
         List<InmuebleImagenDTO> dtos = toDTOList(inmuebles, null);
         for (InmuebleImagenDTO dto : dtos) {
-            List<ImagenDTO> imagenes = imagenesMap.getOrDefault(dto.getId(), List.of());
-            dto.setImagenes(imagenes);
+            dto.setImagenes(imagenesMap.getOrDefault(dto.getId(), List.of()));
         }
+        
         return dtos;
     }
 
@@ -39,5 +39,7 @@ public interface InmuebleMapper {
             dto.setImagenes(imagenes);
         }
     }
+
+    Inmueble toEntity(InmuebleImagenDTO inmuebleImagenDTO);
 
 }

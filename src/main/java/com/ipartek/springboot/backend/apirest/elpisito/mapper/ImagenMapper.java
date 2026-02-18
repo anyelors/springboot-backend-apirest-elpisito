@@ -11,14 +11,16 @@ import com.ipartek.springboot.backend.apirest.elpisito.entities.Imagen;
 @Mapper(componentModel = "spring")
 public interface ImagenMapper {
 
-    @Mapping(target = "url", expression = "java(construirUrl(imagen))")
-    @Mapping(target = "alt", expression = "java(imagen.getAltImagen())")
-    ImagenDTO toDTO(Imagen imagen);
+	@Mapping(target = "url", expression = "java(construirUrl(imagen))")
+	@Mapping(target = "alt", expression = "java(imagen.getAltImagen())")
+	ImagenDTO toDto(Imagen imagen);
 
-    List<ImagenDTO> toDTOList(List<Imagen> imagenes);
+	List<ImagenDTO> toDtoList(List<Imagen> imagenes);
 
-    default String construirUrl(Imagen imagen) {
-        return "/api/imagenes/" + imagen.getEntidadImagen().name().toLowerCase() + "/" + imagen.getEntidadId() + "/" + imagen.getNombre();
-    }
+	default String construirUrl(Imagen imagen) {
+		return "/api/imagenes/" + imagen.getEntidadImagen().name().toLowerCase() 
+				+ "/" + imagen.getEntidadId() 
+				+ "/" + imagen.getNombre();
+	}
 
 }

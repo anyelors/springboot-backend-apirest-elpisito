@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ipartek.springboot.backend.apirest.elpisito.utilities.Rol;
+import com.ipartek.springboot.backend.apirest.elpisito.enumerators.Rol;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
