@@ -13,6 +13,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.dtos.ImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmuebleImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmueble;
 import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
+import com.ipartek.springboot.backend.apirest.elpisito.services.FavoritoServiceImpl;
 import com.ipartek.springboot.backend.apirest.elpisito.services.ImagenServiceImpl;
 
 @Mapper(componentModel = "spring")
@@ -40,6 +41,9 @@ public interface InmuebleMapper {
         }
     }
 
-    Inmueble toEntity(InmuebleImagenDTO inmuebleImagenDTO);
+    @Mapping(target = "usuariosQueLoFavoritean", ignore = true)
+    Inmueble toEntity(InmuebleImagenDTO inmuebleImagenDTO, @Context FavoritoServiceImpl favoritoService);
+
+    List<Inmueble> toEntityList(List<InmuebleImagenDTO> dtos, @Context FavoritoServiceImpl favoritoService);
 
 }

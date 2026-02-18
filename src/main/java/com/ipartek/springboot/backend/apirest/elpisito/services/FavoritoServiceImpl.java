@@ -45,26 +45,20 @@ public class FavoritoServiceImpl {
 
     public InmuebleImagenDTO addFavorito(Long usuarioId, Long inmuebleId) {
         var usuario = findUsuarioById(usuarioId);
-
         var inmueble = findInmuebleById(inmuebleId);
 
-        if (usuario != null && inmueble != null) {
-            usuario.getInmueblesFavoritos().add(inmueble);
-            usuarioRepository.save(usuario);
-        }
+        usuario.getInmueblesFavoritos().add(inmueble);
+        usuarioRepository.save(usuario);
 
         return inmuebleMapper.toDto(inmueble, imagenService);
     }
 
     public InmuebleImagenDTO deleteFavorito(Long usuarioId, Long inmuebleId) {
         var usuario = findUsuarioById(usuarioId);
-
         var inmueble = findInmuebleById(inmuebleId);
 
-        if (usuario != null && inmueble != null) {
-            usuario.getInmueblesFavoritos().remove(inmueble);
-            usuarioRepository.save(usuario);
-        }
+        usuario.getInmueblesFavoritos().remove(inmueble);
+        usuarioRepository.save(usuario);
 
         return inmuebleMapper.toDto(inmueble, imagenService);
     }

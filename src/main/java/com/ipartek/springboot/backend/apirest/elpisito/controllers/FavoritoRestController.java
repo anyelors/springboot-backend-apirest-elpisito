@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmuebleImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.services.FavoritoServiceImpl;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
@@ -20,6 +22,12 @@ public class FavoritoRestController {
     @PostMapping("/favorito")
     public ResponseEntity<InmuebleImagenDTO> addFavorito(@RequestParam Long usuarioId, @RequestParam Long inmuebleId) {
         var inmuebleImagenDTO = favoritoService.addFavorito(usuarioId, inmuebleId);
+        return ResponseEntity.ok(inmuebleImagenDTO);
+    }
+
+    @DeleteMapping("/favorito")
+    public ResponseEntity<InmuebleImagenDTO> deleteFavorito(@RequestParam Long usuarioId, @RequestParam Long inmuebleId) {
+        var inmuebleImagenDTO = favoritoService.deleteFavorito(usuarioId, inmuebleId);
         return ResponseEntity.ok(inmuebleImagenDTO);
     }
     
