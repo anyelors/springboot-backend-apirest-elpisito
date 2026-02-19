@@ -20,14 +20,14 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.ImagenServiceImp
 public interface BannerCarouselMapper {
 
     @Mapping(target = "imagenes", ignore = true)
-	BannerCarouselImagenDTO toDto(BannerCarousel banner, @Context ImagenServiceImpl imagenService);
+	BannerCarouselImagenDTO toDto(BannerCarousel bannerCarousel, @Context ImagenServiceImpl imagenService);
 
-	List<BannerCarouselIdDTO> toIdDtoList(List<BannerCarousel> banners);
+	List<BannerCarouselIdDTO> toIdDtoList(List<BannerCarousel> bannerCarousels);
 
-    List<BannerCarouselImagenDTO> toDTOList(List<BannerCarousel> banners, @Context ImagenServiceImpl imagenService);
+    List<BannerCarouselImagenDTO> toDTOList(List<BannerCarousel> bannerCarousels, @Context ImagenServiceImpl imagenService);
 
-    default List<BannerCarouselImagenDTO> toDtoBulk(List<BannerCarousel> banners, Map<Long, List<ImagenDTO>> imagenesMap) {
-		List<BannerCarouselImagenDTO> dtos = toDTOList(banners, null);
+    default List<BannerCarouselImagenDTO> toDtoBulk(List<BannerCarousel> bannerCarousels, Map<Long, List<ImagenDTO>> imagenesMap) {
+		List<BannerCarouselImagenDTO> dtos = toDTOList(bannerCarousels, null);
 		for (BannerCarouselImagenDTO dto : dtos) {
 			dto.setImagenes(imagenesMap.getOrDefault(dto.getId(), List.of()));
 		}
@@ -36,10 +36,10 @@ public interface BannerCarouselMapper {
 	}
 
     @AfterMapping
-	default void cargarImagenes(BannerCarousel banner, @MappingTarget BannerCarouselImagenDTO dto,
+	default void cargarImagenes(BannerCarousel bannerCarousel, @MappingTarget BannerCarouselImagenDTO dto,
 			@Context ImagenServiceImpl imagenService) {
 		if (imagenService != null) {
-			List<ImagenDTO> imagenes = imagenService.getImagenes(EntidadImagen.BANNER, banner.getId());
+			List<ImagenDTO> imagenes = imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, bannerCarousel.getId());
 			dto.setImagenes(imagenes);
 		}
 	}

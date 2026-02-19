@@ -15,6 +15,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.entities.Poblacion;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Tipo;
 import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
 import com.ipartek.springboot.backend.apirest.elpisito.mapper.InmuebleMapper;
+import com.ipartek.springboot.backend.apirest.elpisito.repositories.InmobiliariaRepository;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.InmuebleRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -26,7 +27,7 @@ public class InmuebleServiceImpl {
     private InmuebleRepository inmuebleRepository;
 
     @Autowired
-    private InmobiliariaServiceImpl inmobiliariaService;
+    private InmobiliariaRepository inmobiliariaRepository;
 
     @Autowired
     private ImagenServiceImpl imagenService;
@@ -84,7 +85,7 @@ public class InmuebleServiceImpl {
 
     public List<InmuebleImagenDTO> findInmueblesInmobiliariaBulk(Long idInmobiliaria) {
 
-        Inmobiliaria inmobiliaria = inmobiliariaService.findById(idInmobiliaria);
+        Inmobiliaria inmobiliaria = inmobiliariaRepository.findById(idInmobiliaria).orElseThrow(() -> new EntityNotFoundException("La inmobiliaria con id " + idInmobiliaria + " no existe"));
 
         List<Inmueble> inmuebles = inmuebleRepository.findByInmobiliariaId(inmobiliaria.getId());
         List<Long> ids = inmuebles.stream()

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmobiliariaImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmobiliaria;
 import com.ipartek.springboot.backend.apirest.elpisito.services.InmobiliariaServiceImpl;
 
@@ -24,32 +25,32 @@ public class InmobiliariaRestController {
     private InmobiliariaServiceImpl inmobiliariaService;
 
     @GetMapping("/inmobiliarias")
-	public ResponseEntity<List<Inmobiliaria>> findAll() {
-		return ResponseEntity.ok(inmobiliariaService.findAll());
+	public ResponseEntity<List<InmobiliariaImagenDTO>> findAll() {
+		return ResponseEntity.ok(inmobiliariaService.findAllBulk());
 	}
 
     @GetMapping("/inmobiliarias-activas/{active}")
-	public ResponseEntity<List<Inmobiliaria>> findAllActivas(@PathVariable Integer active) {
-		return ResponseEntity.ok(inmobiliariaService.findAllByActivo(active));
+	public ResponseEntity<List<InmobiliariaImagenDTO>> findAllActivo(@PathVariable Integer active) {
+		return ResponseEntity.ok(inmobiliariaService.findAllActiveBulk(active));
 	}
 
     @GetMapping("/inmobiliaria/{id}")
-	public ResponseEntity<Inmobiliaria> findById(@PathVariable Long id) {
+	public ResponseEntity<InmobiliariaImagenDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(inmobiliariaService.findById(id));
 	}
 
     @PostMapping("/inmobiliaria")
-	public ResponseEntity<Inmobiliaria> create(@RequestBody Inmobiliaria inmobiliaria) {
+	public ResponseEntity<InmobiliariaImagenDTO> create(@RequestBody Inmobiliaria inmobiliaria) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(inmobiliariaService.save(inmobiliaria));
 	}
 
     @PutMapping("/inmobiliaria")
-	public ResponseEntity<Inmobiliaria> update(@RequestBody Inmobiliaria inmobiliaria) {
+	public ResponseEntity<InmobiliariaImagenDTO> update(@RequestBody Inmobiliaria inmobiliaria) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(inmobiliariaService.save(inmobiliaria));
 	}
 
 	@PutMapping("/inmobiliaria-activate/{id}")
-	public ResponseEntity<Inmobiliaria> delete(@PathVariable Long id) {
+	public ResponseEntity<InmobiliariaImagenDTO> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(inmobiliariaService.deleteById(id));
 	}
 

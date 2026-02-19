@@ -69,5 +69,4 @@ public class BannerServiceImpl {
         return bannerMapper.toDto(banner, imagenService);
     }
 
-
 }
