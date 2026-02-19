@@ -1,5 +1,7 @@
 package com.ipartek.springboot.backend.apirest.elpisito.dtos;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +20,6 @@ public class InmobiliariaImagenDTO {
 	private String representante;
 	private String telefono;
     private Integer activo;
+	private List<ImagenDTO> imagenes;
 
 }
