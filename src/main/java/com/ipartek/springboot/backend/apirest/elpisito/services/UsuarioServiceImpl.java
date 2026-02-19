@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
 import com.ipartek.springboot.backend.apirest.elpisito.mapper.UsuarioMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
@@ -12,7 +13,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepos
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UsuarioServiceImpl implements GeneralService<Usuario> {
+public class UsuarioServiceImpl {
 
 	// UsuarioRepository Automaticamente hereda todos los metodos de JpaRepository y
 	// metodos propios
@@ -21,35 +22,33 @@ public class UsuarioServiceImpl implements GeneralService<Usuario> {
 	@Autowired
 	private UsuarioMapper usuarioMapper;
 
-	@Override
-	public List<Usuario> findAll() {
-		return usuarioRepository.findAll();
+	public List<UsuarioDTO> findAll() {
+		List<Usuario> usuarios = usuarioRepository.findAll();
+		return usuarioMapper.toDTOList(usuarios);
 	}
 
-	@Override
-	public List<Usuario> findAllByActivo(Integer isActivo) {
-		return usuarioRepository.findAllByActivo(isActivo);
+	public List<UsuarioDTO> findAllByActivo(Integer isActivo) {
+		return usuarioMapper.toDTOList(usuarioRepository.findAllByActivo(isActivo));
 	}
 
-	@Override
-	public Usuario findById(Long id) {
-		return usuarioRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe"));
+	public UsuarioDTO findById(Long id) {
+		return usuarioMapper.toDTO(usuarioRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe")));
 	}
 
-	@Override
-	public Usuario save(Usuario objeto) {
+	public UsuarioDTO save(Usuario objeto) {
 		objeto.setPasswordOpen(objeto.getPassword());
-		return usuarioRepository.save(objeto);
+		Usuario usuario = usuarioRepository.save(objeto);
+
+		return usuarioMapper.toDTO(usuario);
 	}
 
-	@Override
-	public Usuario deleteById(Long id) {
+	public UsuarioDTO deleteById(Long id) {
 		Usuario usuario = usuarioRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe"));
 		usuarioRepository.deleteById(id);
 
-		return usuario;
+		return usuarioMapper.toDTO(usuario);
 	}
 
 	public Usuario completaUsuarioRequestRespetandoNullus(Usuario usuarioRequest) {

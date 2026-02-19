@@ -1,13 +1,18 @@
 package com.ipartek.springboot.backend.apirest.elpisito.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ipartek.springboot.backend.apirest.elpisito.dtos.BannerDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.BannerIdDTO;
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.BannerImagenDTO;
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.ImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Banner;
+import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
+import com.ipartek.springboot.backend.apirest.elpisito.mapper.BannerMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.BannerRepository;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.PaginaRepository;
 
@@ -22,38 +27,56 @@ public class PaginaBannerServiceImpl {
     @Autowired
     private BannerRepository bannerRepository;
 
-    private BannerDTO toDTO(Banner banner, Long paginaId) {
-        return new BannerDTO(banner.getId(), banner.getTitular(), banner.getClaim(), banner.getLink(), paginaId);
+    @Autowired
+    private BannerMapper bannerMapper;
+
+    @Autowired
+    private ImagenServiceImpl imagenService;
+
+    private BannerImagenDTO toDTO(Banner banner, ImagenServiceImpl imagenService) {
+        return bannerMapper.toDto(banner, imagenService);
     }
 
-    public BannerDTO addBannerToPagina(Long paginaId, Long bannerId) {
+    public BannerImagenDTO addBannerToPagina(Long paginaId, Long bannerId) {
         var pagina = paginaRepository.findById(paginaId).orElseThrow(() -> new EntityNotFoundException("La pagina con id " + paginaId + " no existe"));
         var banner = bannerRepository.findById(bannerId).orElseThrow(() -> new EntityNotFoundException("El banner con id " + bannerId + " no existe"));
 
         pagina.getBannersPagina().add(banner);
         paginaRepository.save(pagina);
 
-        return toDTO(banner, paginaId);
+        return toDTO(banner, imagenService);
     }
 
-    public BannerDTO deleteBannerToPagina(Long paginaId, Long bannerId) {
+    public BannerImagenDTO deleteBannerToPagina(Long paginaId, Long bannerId) {
         var pagina = paginaRepository.findById(paginaId).orElseThrow(() -> new EntityNotFoundException("La pagina con id " + paginaId + " no existe"));
         var banner = bannerRepository.findById(bannerId).orElseThrow(() -> new EntityNotFoundException("El banner con id " + bannerId + " no existe"));
 
         pagina.getBannersPagina().remove(banner);
         paginaRepository.save(pagina);
 
-        return toDTO(banner, paginaId);
+        return toDTO(banner, imagenService);
     }
 
-    public List<Banner> findBannersPagina(Long paginaId) {
+    public List<BannerImagenDTO> findBannersPagina(Long paginaId) {
         var pagina = paginaRepository.findById(paginaId).orElseThrow(() -> new EntityNotFoundException("La pagina con id " + paginaId + " no existe"));
-        return List.copyOf(pagina.getBannersPagina());
+
+        List<Banner> banners = new ArrayList<>(pagina.getBannersPagina());
+
+        List<Long> ids = banners.stream()
+                        .map(Banner::getId)
+                        .toList();
+
+        Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
+
+        return bannerMapper.toDtoBulk(banners, mapaImagenes);
+        
     }
 
     public List<BannerIdDTO> findIdsBannersPagina(Long paginaId) {
         var pagina = paginaRepository.findById(paginaId).orElseThrow(() -> new EntityNotFoundException("La pagina con id " + paginaId + " no existe"));
-        return pagina.getBannersPagina().stream().map(banner -> new BannerIdDTO(banner.getId())).toList();
+
+        List<Banner> banners = new ArrayList<>(pagina.getBannersPagina());
+        return bannerMapper.toIdDtoList(banners);
     }
 
 }    

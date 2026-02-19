@@ -27,59 +27,33 @@ public class UsuarioRestController {
 
 	@GetMapping("/usuarios")
 	public ResponseEntity<List<UsuarioDTO>> findAll() {
-		List<Usuario> usuario = usuarioService.findAll();
-		List<UsuarioDTO> usuariosDTO = usuario.stream()
-				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name(), u.getActivo())).toList();
-
-		return ResponseEntity.ok(usuariosDTO);
+		return ResponseEntity.ok(usuarioService.findAll());
 	}
 
 	@GetMapping("/usuarios-activos/{active}")
 	public ResponseEntity<List<UsuarioDTO>> findAllActivo(@PathVariable Integer active) {
-		List<Usuario> usuario = usuarioService.findAllByActivo(active);
-		List<UsuarioDTO> usuariosDTO = usuario.stream()
-				.map(u -> new UsuarioDTO(u.getId(), u.getNombre(), u.getRol().name(), u.getActivo())).toList();
-
-		return ResponseEntity.ok(usuariosDTO);
+		return ResponseEntity.ok(usuarioService.findAllByActivo(active));
 	}
 
 	@GetMapping("/usuario/{id}")
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
-		Usuario usuario = usuarioService.findById(id);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name(),
-				usuario.getActivo());
-
-		return ResponseEntity.ok(usuarioDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findById(id));
 	}
 
 	@PostMapping("/usuario")
 	public ResponseEntity<UsuarioDTO> create(@RequestBody Usuario usuario) {
-		Usuario usuarioF = usuarioService.save(usuario);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name(),
-				usuarioF.getActivo());
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(usuario));
 	}
 
 	@PutMapping("/usuario")
 	public ResponseEntity<UsuarioDTO> update(@RequestBody Usuario usuario) {
-
 		Usuario usuarioCompleto = usuarioService.completaUsuarioRequestRespetandoNullus(usuario);
-
-		Usuario usuarioF = usuarioService.save(usuarioCompleto);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuarioF.getId(), usuarioF.getNombre(), usuarioF.getRol().name(),
-				usuarioF.getActivo());
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(usuarioCompleto));
 	}
 
 	@DeleteMapping("/usuario/{id}")
 	public ResponseEntity<UsuarioDTO> deleteById(@PathVariable Long id) {
-		Usuario usuario = usuarioService.deleteById(id);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getRol().name(),
-				usuario.getActivo());
-
-		return ResponseEntity.ok(usuarioDTO);
+		return ResponseEntity.ok(usuarioService.deleteById(id));
 	}
 
 }

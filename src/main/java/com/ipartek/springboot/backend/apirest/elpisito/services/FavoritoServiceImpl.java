@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.ImagenDTO;
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmuebleIdDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmuebleImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmueble;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
@@ -78,15 +79,12 @@ public class FavoritoServiceImpl {
         return inmuebleMapper.toDtoBulk(inmuebles, mapaImagenes);
     }
 
-    public List<Long> findIdsFavoritos(Long usuarioId) {
+    public List<InmuebleIdDTO> findIdsFavoritos(Long usuarioId) {
         var usuario = findUsuarioById(usuarioId);
 
         // Convertimos el Set a List para poder trabajar con streams
         List<Inmueble> inmuebles = new ArrayList<>(usuario.getInmueblesFavoritos());
-
-        return inmuebles.stream()
-                        .map(Inmueble::getId)
-                        .toList();
+        return inmuebleMapper.toIdDtoList(inmuebles);
     }
 
 }

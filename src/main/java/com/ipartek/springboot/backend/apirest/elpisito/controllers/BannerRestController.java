@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.BannerImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Banner;
 import com.ipartek.springboot.backend.apirest.elpisito.services.BannerServiceImpl;
 
@@ -24,32 +25,32 @@ public class BannerRestController {
     private BannerServiceImpl bannerService;
 
     @GetMapping("/banners")
-	public ResponseEntity<List<Banner>> findAll() {
-		return ResponseEntity.ok(bannerService.findAll());
+	public ResponseEntity<List<BannerImagenDTO>> findAll() {
+		return ResponseEntity.ok(bannerService.findAllBulk());
 	}
 
     @GetMapping("/banners-activos/{active}")
-	public ResponseEntity<List<Banner>> findAllActivo(@PathVariable Integer active) {
-		return ResponseEntity.ok(bannerService.findAllByActivo(active));
+	public ResponseEntity<List<BannerImagenDTO>> findAllActivo(@PathVariable Integer active) {
+		return ResponseEntity.ok(bannerService.findAllActiveBulk(active));
 	}
 
     @GetMapping("/banner/{id}")
-	public ResponseEntity<Banner> findById(@PathVariable Long id) {
+	public ResponseEntity<BannerImagenDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(bannerService.findById(id));
 	}
 
     @PostMapping("/banner")
-	public ResponseEntity<Banner> create(@RequestBody Banner banner) {
+	public ResponseEntity<BannerImagenDTO> create(@RequestBody Banner banner) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerService.save(banner));
 	}
 
     @PutMapping("/banner")
-	public ResponseEntity<Banner> update(@RequestBody Banner banner) {
+	public ResponseEntity<BannerImagenDTO> update(@RequestBody Banner banner) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerService.save(banner));
 	}
 
 	@PutMapping("/banner-activate/{id}")
-	public ResponseEntity<Banner> delete(@PathVariable Long id) {
+	public ResponseEntity<BannerImagenDTO> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerService.deleteById(id));
 	}
 
