@@ -2,6 +2,7 @@ package com.ipartek.springboot.backend.apirest.elpisito.exceptions;
 
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemException;
+import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -110,5 +111,16 @@ public class ApiExceptionHandler {
 		String elMensaje = "El end point al que está intentando acceder no existe.";
 		return build(HttpStatus.METHOD_NOT_ALLOWED, elMensaje, ex, req);
 	}
+	
+	//FILE
+	//Puede ocurrir si algún componente intermedio de una ruta (uri) no existe y el sistema no encuentra el recurso
+	@ExceptionHandler(NoSuchFileException.class)
+	public ResponseEntity<ErrorResponseDTO> noSuchFile(NoSuchFileException ex, HttpServletRequest req){
+		
+		String elMensaje = "Estás intentendo acceder a un archivo cuya ruta no existe";
+		return build(HttpStatus.INTERNAL_SERVER_ERROR,elMensaje,ex,req); //500
+		
+	}
+	
 
 }

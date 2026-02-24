@@ -24,15 +24,15 @@ public class UsuarioServiceImpl {
 
 	public List<UsuarioDTO> findAll() {
 		List<Usuario> usuarios = usuarioRepository.findAll();
-		return usuarioMapper.toDTOList(usuarios);
+		return usuarioMapper.toDtoList(usuarios);
 	}
 
 	public List<UsuarioDTO> findAllByActivo(Integer isActivo) {
-		return usuarioMapper.toDTOList(usuarioRepository.findAllByActivo(isActivo));
+		return usuarioMapper.toDtoList(usuarioRepository.findAllByActivo(isActivo));
 	}
 
 	public UsuarioDTO findById(Long id) {
-		return usuarioMapper.toDTO(usuarioRepository.findById(id)
+		return usuarioMapper.toDto(usuarioRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe")));
 	}
 
@@ -40,7 +40,7 @@ public class UsuarioServiceImpl {
 		objeto.setPasswordOpen(objeto.getPassword());
 		Usuario usuario = usuarioRepository.save(objeto);
 
-		return usuarioMapper.toDTO(usuario);
+		return usuarioMapper.toDto(usuario);
 	}
 
 	public UsuarioDTO deleteById(Long id) {
@@ -48,14 +48,14 @@ public class UsuarioServiceImpl {
 				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe"));
 		usuarioRepository.deleteById(id);
 
-		return usuarioMapper.toDTO(usuario);
+		return usuarioMapper.toDto(usuario);
 	}
 
 	public Usuario completaUsuarioRequestRespetandoNullus(Usuario usuarioRequest) {
 		Usuario usuarioBD = usuarioRepository.findById(usuarioRequest.getId()).orElseThrow(
 				() -> new EntityNotFoundException("El usuario con id " + usuarioRequest.getId() + " no existe"));
 
-		usuarioMapper.updateUsuarioFromDTO(usuarioRequest, usuarioBD);
+		usuarioMapper.updateUsuarioFromDto(usuarioRequest, usuarioBD);
 		return usuarioBD;
 	}
 

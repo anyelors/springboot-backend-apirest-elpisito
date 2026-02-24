@@ -10,14 +10,26 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
 
+
+
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
+	//Mapea el objeto Usuario que llega de cliente al hacer un update para no perder
+	//los valores null que llegan de cliente (en cliente solo usamos el UsuarioDTO por
+	//razones de confidencialidad de datos...email, password...)
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-	void updateUsuarioFromDTO(Usuario usuarioRequest, @MappingTarget Usuario usuarioEntity);
+	void updateUsuarioFromDto(Usuario usuarioRequest, @MappingTarget Usuario usuarioEntity);
+	
+	//UsuarioDTO recibe como rol un String. Parece que MapStruct aplica el toString en estos casos
+	UsuarioDTO toDto(Usuario usuario); // No hace falta @Mapping porque no necesitamos "aclarar nada" a MapStruct
 
-	UsuarioDTO toDTO(Usuario usuario);
-
-	List<UsuarioDTO> toDTOList(List<Usuario> usuarios);
-
+	List<UsuarioDTO> toDtoList(List<Usuario> usuarios);
+	
 }
+
+
+//@MappingTarget: actualiza la entidad existente
+//IGNORE: si en el DTO viene null --> no pisa el valor actual
+//usuarioRequest: lo que llega al Controller (incompleto)
+//usuarioEntity: lo que llega de la BBDD (completo)
