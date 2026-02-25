@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
-import com.ipartek.springboot.backend.apirest.elpisito.mapper.UsuarioMapper;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.UsuarioMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;

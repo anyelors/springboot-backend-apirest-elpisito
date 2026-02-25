@@ -10,7 +10,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.dtos.ImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmobiliariaImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmobiliaria;
 import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
-import com.ipartek.springboot.backend.apirest.elpisito.mapper.InmobiliariaMapper;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.InmobiliariaMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.InmobiliariaRepository;
 
 import jakarta.persistence.EntityNotFoundException;

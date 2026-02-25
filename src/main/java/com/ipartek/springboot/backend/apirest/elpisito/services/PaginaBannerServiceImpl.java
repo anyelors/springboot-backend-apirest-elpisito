@@ -12,7 +12,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.dtos.BannerImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.ImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Banner;
 import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
-import com.ipartek.springboot.backend.apirest.elpisito.mapper.BannerMapper;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.BannerMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.BannerRepository;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.PaginaRepository;
 

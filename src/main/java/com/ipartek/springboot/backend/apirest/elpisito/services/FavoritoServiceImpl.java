@@ -13,7 +13,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.dtos.InmuebleImagenDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmueble;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
 import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
-import com.ipartek.springboot.backend.apirest.elpisito.mapper.InmuebleMapper;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.InmuebleMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.InmuebleRepository;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
 

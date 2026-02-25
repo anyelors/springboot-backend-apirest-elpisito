@@ -1,4 +1,4 @@
-package com.ipartek.springboot.backend.apirest.elpisito.mapper;
+package com.ipartek.springboot.backend.apirest.elpisito.mappers;
 
 import java.util.List;
 

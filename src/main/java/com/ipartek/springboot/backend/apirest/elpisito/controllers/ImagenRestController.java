@@ -2,7 +2,6 @@ package com.ipartek.springboot.backend.apirest.elpisito.controllers;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -26,90 +25,68 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.ImagenServiceImp
 @RestController
 @RequestMapping("/api/imagenes")
 public class ImagenRestController {
-	
+
 	@Autowired
 	private ImagenServiceImpl imagenService;
-	
-	
+
 	@PostMapping("/upload")
-	public ResponseEntity<ImagenDTO> upload(@RequestParam MultipartFile file, @RequestParam EntidadImagen entidadImagen, @RequestParam Long entidadId, @RequestParam String alt) {
+	public ResponseEntity<ImagenDTO> upload(@RequestParam MultipartFile file, @RequestParam EntidadImagen entidadImagen,
+			@RequestParam Long entidadId, @RequestParam String alt) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(imagenService.store(file, entidadImagen, entidadId, alt));
 	}
 
-
 	@GetMapping("/{entidadImagen}/{entidadId}/{nombre}")
-	public ResponseEntity<Resource> renderizarImagen(@PathVariable EntidadImagen entidadImagen, @PathVariable Long entidadId, @PathVariable String nombre) {
-		return imagenService.renderizarImagen(entidadImagen, entidadId, nombre);//200	
+	public ResponseEntity<Resource> renderizarImagen(@PathVariable String entidadImagen, @PathVariable Long entidadId,
+			@PathVariable String nombre) {
+		return imagenService.renderizarImagen(EntidadImagen.valueOf(entidadImagen.toUpperCase()), entidadId, nombre);// 200
 	}
-	
-	
+
 	@GetMapping("/inmueble/{id}")
-	public ResponseEntity<List<ImagenDTO>>findImagenesInmueble(@PathVariable Long id) {
-		
-		
-		return ResponseEntity.ok( imagenService.getImagenes(EntidadImagen.INMUEBLE,id) );//200
-		
+	public ResponseEntity<List<ImagenDTO>> findImagenesInmueble(@PathVariable Long id) {
+
+		return ResponseEntity.ok(imagenService.getImagenes(EntidadImagen.INMUEBLE, id));// 200
+
 	}
-	
-	
-	
+
 	@GetMapping("/banner/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenBanner(@PathVariable Long id) {
-		
 
-		return ResponseEntity.ok( imagenService.getImagenes(EntidadImagen.BANNER,id) );//200
-		
+		return ResponseEntity.ok(imagenService.getImagenes(EntidadImagen.BANNER, id));// 200
+
 	}
-	
+
 	@GetMapping("/inmobiliaria/{id}")
 	public ResponseEntity<List<ImagenDTO>> findLogoInmobiliaria(@PathVariable Long id) {
-		
 
-		return ResponseEntity.ok( imagenService.getImagenes(EntidadImagen.INMOBILIARIA,id) );//200
-		
+		return ResponseEntity.ok(imagenService.getImagenes(EntidadImagen.INMOBILIARIA, id));// 200
+
 	}
-	
+
 	@GetMapping("/banner-carousel/{id}")
 	public ResponseEntity<List<ImagenDTO>> findImagenBannerCarousel(@PathVariable Long id) {
-		
 
-		return ResponseEntity.ok( imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL,id) );//200
-		
+		return ResponseEntity.ok(imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, id));// 200
+
 	}
-	
-	
 
-	
-	
 	@PostMapping("/imagen")
-	public  ResponseEntity<ImagenDTO> create(@RequestBody Imagen imagen) {
-		
+	public ResponseEntity<ImagenDTO> create(@RequestBody Imagen imagen) {
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(imagenService.save(imagen));
-		
+
 	}
-	
-	
-	
+
 	@PutMapping("/imagen")
-	public  ResponseEntity<ImagenDTO> update(@RequestBody Imagen imagen) {
-		
+	public ResponseEntity<ImagenDTO> update(@RequestBody Imagen imagen) {
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(imagenService.save(imagen));
-		
+
 	}
-	
-	
-	
+
 	@DeleteMapping("/imagen/{id}")
-	public ResponseEntity<ImagenDTO> deleteById(@PathVariable Long id ) {
-		return ResponseEntity.ok( imagenService.deleteImagen(id) );//200
-		
+	public ResponseEntity<ImagenDTO> deleteById(@PathVariable Long id) {
+		return ResponseEntity.ok(imagenService.deleteImagen(id));// 200
+
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

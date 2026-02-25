@@ -14,7 +14,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.entities.Operacion;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Poblacion;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Tipo;
 import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen;
-import com.ipartek.springboot.backend.apirest.elpisito.mapper.InmuebleMapper;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.InmuebleMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.InmobiliariaRepository;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.InmuebleRepository;
 
