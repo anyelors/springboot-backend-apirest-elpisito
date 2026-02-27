@@ -3,6 +3,7 @@ package com.ipartek.springboot.backend.apirest.elpisito.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
@@ -22,6 +23,9 @@ public class UsuarioServiceImpl {
 	@Autowired
 	private UsuarioMapper usuarioMapper;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public List<UsuarioDTO> findAll() {
 		List<Usuario> usuarios = usuarioRepository.findAll();
 		return usuarioMapper.toDtoList(usuarios);
@@ -36,8 +40,15 @@ public class UsuarioServiceImpl {
 				.orElseThrow(() -> new EntityNotFoundException("El usuario con id " + id + " no existe")));
 	}
 
+	public UsuarioDTO findByName(String nombre) {
+		return usuarioMapper.toDto(usuarioRepository.findByNombre(nombre)
+				.orElseThrow(() -> new EntityNotFoundException("El usuario con el nombre " + nombre + " no existe")));
+	}
+
 	public UsuarioDTO save(Usuario objeto) {
+
 		objeto.setPasswordOpen(objeto.getPassword());
+		objeto.setPassword(passwordEncoder.encode(objeto.getPassword()));
 		Usuario usuario = usuarioRepository.save(objeto);
 
 		return usuarioMapper.toDto(usuario);

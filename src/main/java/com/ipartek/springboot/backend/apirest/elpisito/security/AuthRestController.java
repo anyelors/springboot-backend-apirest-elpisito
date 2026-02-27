@@ -1,0 +1,100 @@
+package com.ipartek.springboot.backend.apirest.elpisito.security;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
+import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthRestController {
+
+	@Autowired
+	AuthenticationManager authenticationManager;
+	@Autowired
+	JWTService jwtService;
+	@Autowired
+	UsuarioRepository usuarioRepository;
+
+	@PostMapping("/login")
+	public ResponseEntity<JWTResponse> login(@RequestBody JWTRequest request) {
+
+		/*
+		 * Aunque parezca que la variable auth no se usa, en realidad cumple tres
+		 * funciones muy importantes... 1) Hace que Spring Security: - llame a tu
+		 * UserDetailService.loadUserByUserName(username) - compara la contraseña que
+		 * tiene el usuario en la BBDD con el password recibido - verifica si el usuario
+		 * existe - si falla lanza la excepción (BadCredentialsException) - si todo va
+		 * bien devuelve un objeto Authentication autenticado - En resumen si las
+		 * credenciales son incorrectas nunca se llega a generar un JWT - por lo tanto,
+		 * aunque no usemos auth directamente en este método, este objeto ya contiene -
+		 * la info de si el usuario es válido o no 2) Contiene la información de
+		 * autenticación del usuario ¿Qué datos contiene? auth.getPrincipal(); //Es el
+		 * objeto UserDetails auth.getAuthorities(); //Roles auth.isAuthenticated();
+		 * //boolean 3) Spring Security lo guarda en el Security Context SUPER RESUMEN:
+		 * el objeto auth es el resultado oficial del login
+		 * 
+		 */
+
+		@SuppressWarnings("unused")
+		Authentication auth = authenticationManager.authenticate(
+
+				new UsernamePasswordAuthenticationToken(request.username(), request.password())
+
+		);
+
+		Usuario usuario = usuarioRepository.findByNombre(request.username()).orElseThrow();
+
+		String token = jwtService.generateToken(usuario);
+
+		// Vamos a crear una Cookie donde albergaremos el token para mandarlo a Cliente
+		// El (httpOnly) para que el cookie no sea legible en ningun momento en cliente
+		ResponseCookie accessCookie = ResponseCookie.from("access_token", token)
+				.httpOnly(true)
+				.secure(true)
+				.sameSite("None")
+				.path("/")
+				.build();
+
+		Map<String, String> response = new HashMap<>();
+		response.put("access_token", token);
+		response.put("mensaje", "Login OK");
+
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessCookie.toString())
+				.body(new JWTResponse(response));
+
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout() {
+
+		ResponseCookie deleteAccess = ResponseCookie.from("access_token", "")
+				.httpOnly(true)
+				.secure(true)
+				.sameSite("None")
+				.path("/")
+				.build();
+
+		Map<String, String> response = new HashMap<>();
+		response.put("mensaje", "Logout OK");
+
+		return ResponseEntity.ok()
+				.header(HttpHeaders.SET_COOKIE, deleteAccess.toString())
+				.body(new JWTResponse(response));
+
+	}
+
+}

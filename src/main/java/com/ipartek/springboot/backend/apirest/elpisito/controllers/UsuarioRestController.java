@@ -1,10 +1,13 @@
 package com.ipartek.springboot.backend.apirest.elpisito.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
+import com.ipartek.springboot.backend.apirest.elpisito.security.JWTResponse;
 import com.ipartek.springboot.backend.apirest.elpisito.services.UsuarioServiceImpl;
 
 @RestController
@@ -54,6 +58,21 @@ public class UsuarioRestController {
 	@DeleteMapping("/usuario/{id}")
 	public ResponseEntity<UsuarioDTO> deleteById(@PathVariable Long id) {
 		return ResponseEntity.ok(usuarioService.deleteById(id));
+	}
+
+	@PostMapping("/me")
+	public ResponseEntity<?> me(Authentication authentication) {
+
+		if (authentication == null || !authentication.isAuthenticated()) {
+			Map<String, String> response = new HashMap<>();
+			response.put("mensaje", "El usuario no esta autenticado");
+
+			return ResponseEntity.ok(new JWTResponse(response));
+
+		}
+
+		return ResponseEntity.ok(usuarioService.findByName(authentication.getName()));
+
 	}
 
 }
