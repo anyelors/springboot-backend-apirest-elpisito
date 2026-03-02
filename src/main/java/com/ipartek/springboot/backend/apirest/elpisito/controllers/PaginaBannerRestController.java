@@ -20,31 +20,32 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.PaginaBannerServ
 @RequestMapping("/api")
 public class PaginaBannerRestController {
 
-    @Autowired
-    private PaginaBannerServiceImpl paginaBannerService;
+	@Autowired
+	private PaginaBannerServiceImpl paginaBannerService;
 
-    @PostMapping("/pagina-banner")
-    public ResponseEntity<BannerImagenDTO> addBannerToPagina(@RequestParam Long paginaId, @RequestParam Long bannerId) {
-        BannerImagenDTO bannerDTO = paginaBannerService.addBannerToPagina(paginaId, bannerId);
-        return ResponseEntity.ok(bannerDTO);
-    }
+	@PostMapping("/pagina-banner")
+	public ResponseEntity<BannerImagenDTO> addBannerToPagina(@RequestParam Long paginaId, @RequestParam Long bannerId) {
+		BannerImagenDTO bannerDTO = paginaBannerService.addBannerToPagina(paginaId, bannerId);
+		return ResponseEntity.ok(bannerDTO);
+	}
 
-    @DeleteMapping("/pagina-banner")
-    public ResponseEntity<BannerImagenDTO> deleteBannerToPagina(@RequestParam Long paginaId, @RequestParam Long bannerId) {
-        BannerImagenDTO bannerDTO = paginaBannerService.deleteBannerToPagina(paginaId, bannerId);
-        return ResponseEntity.ok(bannerDTO);
-    }
+	@DeleteMapping("/pagina-banner")
+	public ResponseEntity<BannerImagenDTO> deleteBannerToPagina(@RequestParam Long paginaId,
+			@RequestParam Long bannerId) {
+		BannerImagenDTO bannerDTO = paginaBannerService.deleteBannerToPagina(paginaId, bannerId);
+		return ResponseEntity.ok(bannerDTO);
+	}
 
-    @GetMapping("/pagina-banner/{id}")
-    public ResponseEntity<List<BannerImagenDTO>> getBannersPagina(@PathVariable Long id) {
-        var banners = paginaBannerService.findBannersPagina(id);
-        return ResponseEntity.ok(banners);
-    }
+	@GetMapping("/banners-pagina/{id}")
+	public ResponseEntity<List<BannerImagenDTO>> findBannersPagina(@PathVariable Long id) {
+		var banners = paginaBannerService.findBannersPagina(id);
+		return ResponseEntity.ok(banners);
+	}
 
-    @GetMapping("/paginaid-banner/{id}")
-    public ResponseEntity<List<BannerIdDTO>> getFavoritosIds(@PathVariable Long id) {
-        var favoritosIds = paginaBannerService.findIdsBannersPagina(id);
-        return ResponseEntity.ok(favoritosIds);
-    }
+	@GetMapping("/bannersid-pagina/{id}")
+	public ResponseEntity<List<BannerIdDTO>> findBannersIdPagina(@PathVariable Long id) {
+		var favoritosIds = paginaBannerService.findIdsBannersPagina(id);
+		return ResponseEntity.ok(favoritosIds);
+	}
 
 }

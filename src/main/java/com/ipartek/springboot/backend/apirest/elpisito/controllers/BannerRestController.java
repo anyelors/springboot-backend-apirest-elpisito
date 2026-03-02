@@ -21,37 +21,37 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.BannerServiceImp
 @RequestMapping("/api")
 public class BannerRestController {
 
-    @Autowired
-    private BannerServiceImpl bannerService;
+	@Autowired
+	private BannerServiceImpl bannerService;
 
-    @GetMapping("/banners")
+	@GetMapping("/banners")
 	public ResponseEntity<List<BannerImagenDTO>> findAll() {
 		return ResponseEntity.ok(bannerService.findAllBulk());
 	}
 
-    @GetMapping("/banners-activos/{active}")
+	@GetMapping("/banners-activos/{active}")
 	public ResponseEntity<List<BannerImagenDTO>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(bannerService.findAllActiveBulk(active));
 	}
 
-    @GetMapping("/banner/{id}")
+	@GetMapping("/banner/{id}")
 	public ResponseEntity<BannerImagenDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(bannerService.findById(id));
 	}
 
-    @PostMapping("/banner")
+	@PostMapping("/banner")
 	public ResponseEntity<BannerImagenDTO> create(@RequestBody Banner banner) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerService.save(banner));
 	}
 
-    @PutMapping("/banner")
+	@PutMapping("/banner")
 	public ResponseEntity<BannerImagenDTO> update(@RequestBody Banner banner) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerService.save(banner));
 	}
 
-	@PutMapping("/banner-activate/{id}")
+	@PutMapping("/banner/{id}")
 	public ResponseEntity<BannerImagenDTO> delete(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(bannerService.deleteById(id));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(bannerService.deleteById(id));
 	}
 
 }

@@ -20,35 +20,35 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.ProvinciaService
 @RequestMapping("/api")
 public class ProvinciaRestController {
 
-    @Autowired
-    private ProvinciaServiceImpl  provinciaService;
+	@Autowired
+	private ProvinciaServiceImpl provinciaService;
 
-    @GetMapping("/provincias")
+	@GetMapping("/provincias")
 	public ResponseEntity<List<Provincia>> findAll() {
 		return ResponseEntity.ok(provinciaService.findAll());
 	}
 
-    @GetMapping("/provincias-activos/{active}")
+	@GetMapping("/provincias-activos/{active}")
 	public ResponseEntity<List<Provincia>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(provinciaService.findAllByActivo(active));
 	}
 
-    @GetMapping("/provincia/{id}")
+	@GetMapping("/provincia/{id}")
 	public ResponseEntity<Provincia> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(provinciaService.findById(id));
 	}
 
-    @PostMapping("/provincia")
+	@PostMapping("/provincia")
 	public ResponseEntity<Provincia> create(@RequestBody Provincia provincia) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(provinciaService.save(provincia));
 	}
 
-    @PutMapping("/provincia")
+	@PutMapping("/provincia")
 	public ResponseEntity<Provincia> update(@RequestBody Provincia provincia) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(provinciaService.save(provincia));
 	}
 
-	@PutMapping("/provincia-activate/{id}")
+	@PutMapping("/provincia/{id}")
 	public ResponseEntity<Provincia> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(provinciaService.deleteById(id));
 	}

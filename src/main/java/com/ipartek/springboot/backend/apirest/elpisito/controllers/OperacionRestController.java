@@ -20,35 +20,35 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.OperacionService
 @RequestMapping("/api")
 public class OperacionRestController {
 
-    @Autowired
-    private OperacionServiceImpl operacionService;
+	@Autowired
+	private OperacionServiceImpl operacionService;
 
-    @GetMapping("/operaciones")
+	@GetMapping("/operaciones")
 	public ResponseEntity<List<Operacion>> findAll() {
 		return ResponseEntity.ok(operacionService.findAll());
 	}
 
-    @GetMapping("/operaciones-activas/{active}")
+	@GetMapping("/operaciones-activas/{active}")
 	public ResponseEntity<List<Operacion>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(operacionService.findAllByActivo(active));
 	}
 
-    @GetMapping("/operacion/{id}")
+	@GetMapping("/operacion/{id}")
 	public ResponseEntity<Operacion> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(operacionService.findById(id));
 	}
 
-    @PostMapping("/operacion")
+	@PostMapping("/operacion")
 	public ResponseEntity<Operacion> create(@RequestBody Operacion operacion) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(operacionService.save(operacion));
 	}
 
-    @PutMapping("/operacion")
+	@PutMapping("/operacion")
 	public ResponseEntity<Operacion> update(@RequestBody Operacion operacion) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(operacionService.save(operacion));
 	}
 
-	@PutMapping("/operacion-activate/{id}")
+	@PutMapping("/operacion/{id}")
 	public ResponseEntity<Operacion> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(operacionService.deleteById(id));
 	}

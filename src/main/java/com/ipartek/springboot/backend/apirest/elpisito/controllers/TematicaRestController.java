@@ -20,37 +20,47 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.TematicaServiceI
 @RequestMapping("/api")
 public class TematicaRestController {
 
-    @Autowired
-    private TematicaServiceImpl tematicaService;
+	@Autowired
+	private TematicaServiceImpl tematicaService;
 
-    @GetMapping("/tematicas")
+	@GetMapping("/tematicas")
 	public ResponseEntity<List<Tematica>> findAll() {
 		return ResponseEntity.ok(tematicaService.findAll());
 	}
 
-    @GetMapping("/tematicas-activas/{active}")
+	@GetMapping("/tematicas-activas/{active}")
 	public ResponseEntity<List<Tematica>> findAllActivas(@PathVariable Integer active) {
 		return ResponseEntity.ok(tematicaService.findAllByActivo(active));
 	}
 
-    @GetMapping("/tematica/{id}")
+	@GetMapping("/tematica/{id}")
 	public ResponseEntity<Tematica> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(tematicaService.findById(id));
 	}
 
-    @PostMapping("/tematica")
+	@PostMapping("/tematica")
 	public ResponseEntity<Tematica> create(@RequestBody Tematica tematica) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tematicaService.save(tematica));
 	}
 
-    @PutMapping("/tematica")
+	@PutMapping("/tematica")
 	public ResponseEntity<Tematica> update(@RequestBody Tematica tematica) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tematicaService.save(tematica));
 	}
 
-	@PutMapping("/tematica-activate/{id}")
+	@PutMapping("/tematica/{id}")
 	public ResponseEntity<Tematica> delete(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(tematicaService.deleteById(id));
+		return ResponseEntity.ok(tematicaService.deleteById(id));
+	}
+
+	@PutMapping("/actualizar-tematica/{id}")
+	public ResponseEntity<Tematica> actualizarTematica(@PathVariable Long id) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(tematicaService.actualizarTematica(id));
+	}
+
+	@GetMapping("/tematica-actual")
+	public ResponseEntity<Tematica> findActual() {
+		return ResponseEntity.ok(tematicaService.findActual());
 	}
 
 }

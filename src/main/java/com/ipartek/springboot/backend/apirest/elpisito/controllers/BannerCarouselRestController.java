@@ -21,35 +21,35 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.BannerCarouselSe
 @RequestMapping("/api")
 public class BannerCarouselRestController {
 
-    @Autowired
-    private BannerCarouselServiceImpl bannerCarouselServiceImpl;
+	@Autowired
+	private BannerCarouselServiceImpl bannerCarouselServiceImpl;
 
-    @GetMapping("/bannerscarousel")
+	@GetMapping("/banners-carouseles")
 	public ResponseEntity<List<BannerCarouselImagenDTO>> findAll() {
 		return ResponseEntity.ok(bannerCarouselServiceImpl.findAllBulk());
 	}
 
-    @GetMapping("/bannerscarousel-activos/{active}")
+	@GetMapping("/banners-carouseles-activos/{active}")
 	public ResponseEntity<List<BannerCarouselImagenDTO>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(bannerCarouselServiceImpl.findAllActiveBulk(active));
 	}
 
-    @GetMapping("/bannercarousel/{id}")
+	@GetMapping("/banner-carousel/{id}")
 	public ResponseEntity<BannerCarouselImagenDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(bannerCarouselServiceImpl.findById(id));
 	}
 
-    @PostMapping("/bannercarousel")
+	@PostMapping("/banner-carousel")
 	public ResponseEntity<BannerCarouselImagenDTO> create(@RequestBody BannerCarousel banner) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerCarouselServiceImpl.save(banner));
 	}
 
-    @PutMapping("/bannercarousel")
+	@PutMapping("/banner-carousel")
 	public ResponseEntity<BannerCarouselImagenDTO> update(@RequestBody BannerCarousel banner) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerCarouselServiceImpl.save(banner));
 	}
 
-	@PutMapping("/bannercarousel-activate/{id}")
+	@PutMapping("/banner-carousel/{id}")
 	public ResponseEntity<BannerCarouselImagenDTO> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bannerCarouselServiceImpl.deleteById(id));
 	}

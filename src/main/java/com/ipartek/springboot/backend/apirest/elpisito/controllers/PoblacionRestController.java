@@ -48,9 +48,9 @@ public class PoblacionRestController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(poblacionService.save(poblacion));
 	}
 
-	@PutMapping("/poblacion-activate/{id}")
+	@PutMapping("/poblacion/{id}")
 	public ResponseEntity<Poblacion> delete(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(poblacionService.deleteById(id));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(poblacionService.deleteById(id));
 	}
 
 }

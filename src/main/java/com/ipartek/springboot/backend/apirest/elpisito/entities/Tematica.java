@@ -26,7 +26,7 @@ import lombok.ToString;
 @Table(name = "tematicas")
 public class Tematica {
 
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Long id;
@@ -35,19 +35,23 @@ public class Tematica {
 	private String nombre;
 
 	@Column
+	private Integer actual;
+
+	@Column
 	private Integer activo;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "tematica_bannercarousel", 
-        joinColumns = { @jakarta.persistence.JoinColumn(name = "tematica_id") }, 
-        inverseJoinColumns = { @jakarta.persistence.JoinColumn(name = "banner_carousel_id") })
-    private java.util.Set<BannerCarousel> bannersCarousel;
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "tematica_bannercarousel", joinColumns = { @jakarta.persistence.JoinColumn(name = "tematica_id") }, inverseJoinColumns = {
+			@jakarta.persistence.JoinColumn(name = "banner_carousel_id") })
+	private java.util.Set<BannerCarousel> bannersCarousel;
 
 	@PrePersist
 	public void prePersist() {
 		if (this.activo == null)
 			this.activo = 1;
+		if (this.actual == null)
+			this.actual = 0;
 	}
 
 }

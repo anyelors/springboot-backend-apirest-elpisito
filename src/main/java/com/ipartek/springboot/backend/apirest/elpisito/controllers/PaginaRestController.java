@@ -18,37 +18,37 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.PaginaServiceImp
 
 @RestController
 @RequestMapping("/api")
-public class PaginaController {
+public class PaginaRestController {
 
-    @Autowired
-    private PaginaServiceImpl paginaService;
+	@Autowired
+	private PaginaServiceImpl paginaService;
 
-    @GetMapping("/paginas")
+	@GetMapping("/paginas")
 	public ResponseEntity<List<Pagina>> findAll() {
 		return ResponseEntity.ok(paginaService.findAll());
 	}
 
-    @GetMapping("/paginas-activas/{active}")
+	@GetMapping("/paginas-activas/{active}")
 	public ResponseEntity<List<Pagina>> findAllActivas(@PathVariable Integer active) {
 		return ResponseEntity.ok(paginaService.findAllByActivo(active));
 	}
 
-    @GetMapping("/pagina/{id}")
+	@GetMapping("/pagina/{id}")
 	public ResponseEntity<Pagina> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(paginaService.findById(id));
 	}
 
-    @PostMapping("/pagina")
+	@PostMapping("/pagina")
 	public ResponseEntity<Pagina> create(@RequestBody Pagina pagina) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(paginaService.save(pagina));
 	}
 
-    @PutMapping("/pagina")
+	@PutMapping("/pagina")
 	public ResponseEntity<Pagina> update(@RequestBody Pagina pagina) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(paginaService.save(pagina));
 	}
 
-	@PutMapping("/pagina-activate/{id}")
+	@PutMapping("/pagina/{id}")
 	public ResponseEntity<Pagina> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(paginaService.deleteById(id));
 	}

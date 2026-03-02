@@ -20,35 +20,35 @@ import com.ipartek.springboot.backend.apirest.elpisito.services.TipoServiceImpl;
 @RequestMapping("/api")
 public class TipoRestController {
 
-    @Autowired
-    private TipoServiceImpl tipoService;
+	@Autowired
+	private TipoServiceImpl tipoService;
 
-    @GetMapping("/tipos")
+	@GetMapping("/tipos")
 	public ResponseEntity<List<Tipo>> findAll() {
 		return ResponseEntity.ok(tipoService.findAll());
 	}
 
-    @GetMapping("/tipos-activos/{active}")
+	@GetMapping("/tipos-activos/{active}")
 	public ResponseEntity<List<Tipo>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(tipoService.findAllByActivo(active));
 	}
 
-    @GetMapping("/tipo/{id}")
+	@GetMapping("/tipo/{id}")
 	public ResponseEntity<Tipo> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(tipoService.findById(id));
 	}
 
-    @PostMapping("/tipo")
+	@PostMapping("/tipo")
 	public ResponseEntity<Tipo> create(@RequestBody Tipo tipo) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tipoService.save(tipo));
 	}
 
-    @PutMapping("/tipo")
+	@PutMapping("/tipo")
 	public ResponseEntity<Tipo> update(@RequestBody Tipo tipo) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tipoService.save(tipo));
 	}
 
-	@PutMapping("/tipo-activate/{id}")
+	@PutMapping("/tipo/{id}")
 	public ResponseEntity<Tipo> delete(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(tipoService.deleteById(id));
 	}
