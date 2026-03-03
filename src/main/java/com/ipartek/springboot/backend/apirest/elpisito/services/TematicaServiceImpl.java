@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Tematica;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.TematicaRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 
 @Service
 public class TematicaServiceImpl implements GeneralService<Tematica> {
@@ -49,15 +49,12 @@ public class TematicaServiceImpl implements GeneralService<Tematica> {
 		return tematicaRepository.save(tematica);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public Tematica actualizarTematica(Long id) {
-
 		Tematica tematica = findById(id);
+		tematicaRepository.desactivarAll(id);
 
-		tematicaRepository.desactivarAll();
-		tematica.setActual(1);
-		return tematicaRepository.save(tematica);
-
+		return tematica;
 	}
 
 	public Tematica findActual() {

@@ -17,7 +17,13 @@ public interface TematicaRepository extends JpaRepository<Tematica, Long> {
 	List<Tematica> findByActual(Integer actual);
 
 	@Modifying
-	@Query("UPDATE Tematica t SET t.actual = 0")
-	void desactivarAll();
+	@Query("""
+			UPDATE Tematica t
+			   SET t.actual = CASE WHEN t.id = :id
+			   					   THEN 1
+			   					   ELSE 0
+			   				  END
+			""")
+	void desactivarAll(Long id);
 
 }

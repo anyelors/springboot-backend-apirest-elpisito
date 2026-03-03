@@ -37,17 +37,13 @@ public class Inmobiliaria {
 
 	@Column
 	private String representante;
-	
+
 	@Column
 	private String telefono;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "inmobiliaria")
 	private List<Inmueble> inmuebles;
-
-	/*
-	 * @Column private String logo;
-	 */
 
 	@Column
 	private Integer activo;
