@@ -1,8 +1,6 @@
 package com.ipartek.springboot.backend.apirest.elpisito.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
-import com.ipartek.springboot.backend.apirest.elpisito.security.JWTResponse;
 import com.ipartek.springboot.backend.apirest.elpisito.services.UsuarioServiceImpl;
 
 @RestController
@@ -60,14 +57,17 @@ public class UsuarioRestController {
 		return ResponseEntity.ok(usuarioService.deleteById(id));
 	}
 
-	@PostMapping("/me")
-	public ResponseEntity<?> me(Authentication authentication) {
+	@GetMapping("/me")
+	public ResponseEntity<UsuarioDTO> me(Authentication authentication) {
 
 		if (authentication == null || !authentication.isAuthenticated()) {
-			Map<String, String> response = new HashMap<>();
-			response.put("mensaje", "El usuario no esta autenticado");
+			/*
+			 * Map<String, String> response = new HashMap<>(); response.put("mensaje", "El usuario no esta autenticado");
+			 * 
+			 * return ResponseEntity.ok(new JWTResponse(response));
+			 */
 
-			return ResponseEntity.ok(new JWTResponse(response));
+			return ResponseEntity.ok(new UsuarioDTO(null, null, null, null));
 
 		}
 

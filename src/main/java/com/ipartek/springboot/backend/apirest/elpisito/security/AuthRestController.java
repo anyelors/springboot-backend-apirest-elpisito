@@ -10,12 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.UsuarioDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Usuario;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.UsuarioMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.UsuarioRepository;
 
 @RestController
@@ -28,24 +31,19 @@ public class AuthRestController {
 	JWTService jwtService;
 	@Autowired
 	UsuarioRepository usuarioRepository;
+	@Autowired
+	private UsuarioMapper usuarioMapper;
 
 	@PostMapping("/login")
-	public ResponseEntity<JWTResponse> login(@RequestBody JWTRequest request) {
+	public ResponseEntity<UsuarioDTO> login(@RequestBody JWTRequest request) {
 
 		/*
-		 * Aunque parezca que la variable auth no se usa, en realidad cumple tres
-		 * funciones muy importantes... 1) Hace que Spring Security: - llame a tu
-		 * UserDetailService.loadUserByUserName(username) - compara la contraseña que
-		 * tiene el usuario en la BBDD con el password recibido - verifica si el usuario
-		 * existe - si falla lanza la excepción (BadCredentialsException) - si todo va
-		 * bien devuelve un objeto Authentication autenticado - En resumen si las
-		 * credenciales son incorrectas nunca se llega a generar un JWT - por lo tanto,
-		 * aunque no usemos auth directamente en este método, este objeto ya contiene -
-		 * la info de si el usuario es válido o no 2) Contiene la información de
-		 * autenticación del usuario ¿Qué datos contiene? auth.getPrincipal(); //Es el
-		 * objeto UserDetails auth.getAuthorities(); //Roles auth.isAuthenticated();
-		 * //boolean 3) Spring Security lo guarda en el Security Context SUPER RESUMEN:
-		 * el objeto auth es el resultado oficial del login
+		 * Aunque parezca que la variable auth no se usa, en realidad cumple tres funciones muy importantes... 1) Hace que Spring Security: - llame a tu
+		 * UserDetailService.loadUserByUserName(username) - compara la contraseña que tiene el usuario en la BBDD con el password recibido - verifica si el usuario existe - si
+		 * falla lanza la excepción (BadCredentialsException) - si todo va bien devuelve un objeto Authentication autenticado - En resumen si las credenciales son incorrectas nunca
+		 * se llega a generar un JWT - por lo tanto, aunque no usemos auth directamente en este método, este objeto ya contiene - la info de si el usuario es válido o no 2)
+		 * Contiene la información de autenticación del usuario ¿Qué datos contiene? auth.getPrincipal(); //Es el objeto UserDetails auth.getAuthorities(); //Roles
+		 * auth.isAuthenticated(); //boolean 3) Spring Security lo guarda en el Security Context SUPER RESUMEN: el objeto auth es el resultado oficial del login
 		 * 
 		 */
 
@@ -69,17 +67,13 @@ public class AuthRestController {
 				.path("/")
 				.build();
 
-		Map<String, String> response = new HashMap<>();
-		response.put("access_token", token);
-		response.put("mensaje", "Login OK");
-
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessCookie.toString())
-				.body(new JWTResponse(response));
+				.body(usuarioMapper.toDto(usuario));
 
 	}
 
-	@PostMapping("/logout")
-	public ResponseEntity<?> logout() {
+	@GetMapping("/logout")
+	public ResponseEntity<JWTResponse> logout() {
 
 		ResponseCookie deleteAccess = ResponseCookie.from("access_token", "")
 				.httpOnly(true)
