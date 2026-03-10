@@ -17,7 +17,7 @@ import com.ipartek.springboot.backend.apirest.elpisito.enumerators.EntidadImagen
 import com.ipartek.springboot.backend.apirest.elpisito.services.FavoritoServiceImpl;
 import com.ipartek.springboot.backend.apirest.elpisito.services.ImagenServiceImpl;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { InmobiliariaMapper.class })
 public interface InmuebleMapper {
 
 	@Mapping(target = "imagenes", ignore = true)

@@ -18,57 +18,55 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class InmobiliariaServiceImpl {
 
-    @Autowired
-    private InmobiliariaRepository inmobiliariaRepository;
+	@Autowired
+	private InmobiliariaRepository inmobiliariaRepository;
 
-    @Autowired
-    private InmobiliariaMapper inmobiliariaMapper;
+	@Autowired
+	private InmobiliariaMapper inmobiliariaMapper;
 
-    @Autowired
-    private ImagenServiceImpl imagenService;
+	@Autowired
+	private ImagenServiceImpl imagenService;
 
-    public List<InmobiliariaImagenDTO> findAllBulk() {
+	public List<InmobiliariaImagenDTO> findAllBulk() {
 
-        List<Inmobiliaria> inmobiliarias = inmobiliariaRepository.findAll();
-        List<Long> ids = inmobiliarias.stream()
-                        .map(Inmobiliaria::getId)
-                        .toList();
+		List<Inmobiliaria> inmobiliarias = inmobiliariaRepository.findAll();
+		List<Long> ids = inmobiliarias.stream()
+				.map(Inmobiliaria::getId)
+				.toList();
 
-        Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
+		Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.INMOBILIARIA, ids);
 
-        return inmobiliariaMapper.toDtoBulk(inmobiliarias, mapaImagenes);
+		return inmobiliariaMapper.toDtoBulk(inmobiliarias, mapaImagenes, imagenService);
 
-    }
+	}
 
-    public List<InmobiliariaImagenDTO> findAllActiveBulk(Integer isActivo) {
+	public List<InmobiliariaImagenDTO> findAllActiveBulk(Integer isActivo) {
 
-        List<Inmobiliaria> inmobiliarias = inmobiliariaRepository.findAllByActivo(isActivo);
-        List<Long> ids = inmobiliarias.stream()
-                        .map(Inmobiliaria::getId)
-                        .toList();
+		List<Inmobiliaria> inmobiliarias = inmobiliariaRepository.findAllByActivo(isActivo);
+		List<Long> ids = inmobiliarias.stream()
+				.map(Inmobiliaria::getId)
+				.toList();
 
-        Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
+		Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.INMOBILIARIA, ids);
 
-        return inmobiliariaMapper.toDtoBulk(inmobiliarias, mapaImagenes);
+		return inmobiliariaMapper.toDtoBulk(inmobiliarias, mapaImagenes, imagenService);
 
-    }
+	}
 
-    public InmobiliariaImagenDTO findById(Long id) {
-        Inmobiliaria inmobiliaria = inmobiliariaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La inmobiliaria con id " + id + " no existe"));
+	public InmobiliariaImagenDTO findById(Long id) {
+		Inmobiliaria inmobiliaria = inmobiliariaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La inmobiliaria con id " + id + " no existe"));
 		return inmobiliariaMapper.toDto(inmobiliaria, imagenService);
 	}
 
-    public InmobiliariaImagenDTO save(Inmobiliaria inmobiliaria) {
-        Inmobiliaria inmobiliariaSave = inmobiliariaRepository.save(inmobiliaria);
-        return inmobiliariaMapper.toDto(inmobiliariaSave, imagenService);
-    }
+	public InmobiliariaImagenDTO save(Inmobiliaria inmobiliaria) {
+		Inmobiliaria inmobiliariaSave = inmobiliariaRepository.save(inmobiliaria);
+		return inmobiliariaMapper.toDto(inmobiliariaSave, imagenService);
+	}
 
-    public InmobiliariaImagenDTO deleteById(Long id) {
-        Inmobiliaria inmobiliaria = inmobiliariaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El banner con id " + id + " no existe"));
-        inmobiliariaRepository.delete(inmobiliaria);
-        return inmobiliariaMapper.toDto(inmobiliaria, imagenService);
-    }
+	public InmobiliariaImagenDTO deleteById(Long id) {
+		Inmobiliaria inmobiliaria = inmobiliariaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La inmobiliaria con id " + id + " no existe"));
+		inmobiliariaRepository.delete(inmobiliaria);
+		return inmobiliariaMapper.toDto(inmobiliaria, imagenService);
+	}
 
 }
-
-

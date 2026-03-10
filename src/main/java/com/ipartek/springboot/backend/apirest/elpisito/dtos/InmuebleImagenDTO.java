@@ -2,7 +2,6 @@ package com.ipartek.springboot.backend.apirest.elpisito.dtos;
 
 import java.util.List;
 
-import com.ipartek.springboot.backend.apirest.elpisito.entities.Inmobiliaria;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Operacion;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Poblacion;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Tipo;
@@ -20,19 +19,19 @@ import lombok.ToString;
 @ToString
 public class InmuebleImagenDTO {
 
-    private Long id;
-    private String via;
-    private String claim;
-    private String nombreVia;
-    private String numero;
-    private String planta;
-    private String puerta;
-    private String apertura;
-    private String orientacion;
-    private Double superficieUtil;
-    private Double superficieConstruida;
-    private Double precio;
-    private Integer habitaciones;
+	private Long id;
+	private String via;
+	private String claim;
+	private String nombreVia;
+	private String numero;
+	private String planta;
+	private String puerta;
+	private String apertura;
+	private String orientacion;
+	private Double superficieUtil;
+	private Double superficieConstruida;
+	private Double precio;
+	private Integer habitaciones;
 	private Integer banhos;
 	private String descripcion;
 	private String calefaccion;
@@ -47,10 +46,10 @@ public class InmuebleImagenDTO {
 	private Integer portada;
 	private Integer oportunidad;
 	private Integer activo;
-    private Tipo tipo;
-    private Operacion operacion;
-    private Poblacion poblacion;
-    private Inmobiliaria inmobiliaria;
-    private List<ImagenDTO> imagenes;
+	private Tipo tipo;
+	private Operacion operacion;
+	private Poblacion poblacion;
+	private InmobiliariaImagenDTO inmobiliaria;
+	private List<ImagenDTO> imagenes;
 
 }
