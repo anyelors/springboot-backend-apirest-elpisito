@@ -18,55 +18,85 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class BannerServiceImpl {
 
-    @Autowired
-    private BannerRepository bannerRepository;
+	@Autowired
+	private BannerRepository bannerRepository;
 
-    @Autowired
-    private ImagenServiceImpl imagenService;
+	@Autowired
+	private ImagenServiceImpl imagenService;
 
-    @Autowired
-    private BannerMapper bannerMapper;
+	@Autowired
+	private BannerMapper bannerMapper;
 
-    public List<BannerImagenDTO> findAllBulk() {
+	public List<BannerImagenDTO> findAllBulk() {
 
-        List<Banner> banners = bannerRepository.findAll();
-        List<Long> ids = banners.stream()
-                        .map(Banner::getId)
-                        .toList();
+		List<Banner> banners = bannerRepository.findAll();
+		List<BannerImagenDTO> dtos = bannerMapper.toDtoList(banners);
 
-        Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
+		List<Long> ids = dtos.stream()
+				.map(dto -> dto.getId())
+				.distinct()
+				.toList();
 
-        return bannerMapper.toDtoBulk(banners, mapaImagenes);
+		Map<Long, List<ImagenDTO>> imagenesMap = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
 
-    }
+		for (BannerImagenDTO dto : dtos) {
+			dto.setImagenes(imagenesMap.getOrDefault(dto.getId(), List.of()));
+		}
 
-    public List<BannerImagenDTO> findAllActiveBulk(Integer isActivo) {
+		return dtos;
 
-        List<Banner> banners = bannerRepository.findAllByActivo(isActivo);
-        List<Long> ids = banners.stream()
-                        .map(Banner::getId)
-                        .toList();
-
-        Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
-
-        return bannerMapper.toDtoBulk(banners, mapaImagenes);
-
-    }
-
-    public BannerImagenDTO findById(Long id) {
-        Banner banner = bannerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El banner con id " + id + " no existe"));
-		return bannerMapper.toDto(banner, imagenService);
 	}
 
-    public BannerImagenDTO save(Banner banner) {
-        Banner bannerGuardado = bannerRepository.save(banner);
-        return bannerMapper.toDto(bannerGuardado, imagenService);
-    }
+	public List<BannerImagenDTO> findAllActiveBulk(Integer isActivo) {
 
-    public BannerImagenDTO deleteById(Long id) {
-        Banner banner = bannerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El banner con id " + id + " no existe"));
-        bannerRepository.delete(banner);
-        return bannerMapper.toDto(banner, imagenService);
-    }
+		List<Banner> banners = bannerRepository.findAllByActivo(isActivo);
+		List<BannerImagenDTO> dtos = bannerMapper.toDtoList(banners);
+
+		List<Long> ids = dtos.stream()
+				.map(dto -> dto.getId())
+				.distinct()
+				.toList();
+
+		Map<Long, List<ImagenDTO>> imagenesMap = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
+
+		for (BannerImagenDTO dto : dtos) {
+			dto.setImagenes(imagenesMap.getOrDefault(dto.getId(), List.of()));
+		}
+
+		return dtos;
+
+	}
+
+	public BannerImagenDTO findById(Long id) {
+		Banner banner = bannerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El banner con id " + id + " no existe"));
+		BannerImagenDTO dto = bannerMapper.toDto(banner);
+
+		List<ImagenDTO> imagenesDtos = imagenService.getImagenes(EntidadImagen.BANNER, dto.getId());
+		dto.setImagenes(imagenesDtos);
+
+		return dto;
+	}
+
+	public BannerImagenDTO save(Banner banner) {
+		Banner bannerGuardado = bannerRepository.save(banner);
+		BannerImagenDTO dto = bannerMapper.toDto(bannerGuardado);
+
+		List<ImagenDTO> imagenesDtos = imagenService.getImagenes(EntidadImagen.BANNER, dto.getId());
+		dto.setImagenes(imagenesDtos);
+
+		return dto;
+	}
+
+	public BannerImagenDTO deleteById(Long id) {
+		Banner banner = bannerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El banner con id " + id + " no existe"));
+		BannerImagenDTO dto = bannerMapper.toDto(banner);
+
+		bannerRepository.delete(banner);
+
+		List<ImagenDTO> imagenesDtos = imagenService.getImagenes(EntidadImagen.BANNER, dto.getId());
+		dto.setImagenes(imagenesDtos);
+
+		return dto;
+	}
 
 }

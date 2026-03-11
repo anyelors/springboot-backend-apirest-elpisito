@@ -33,10 +33,6 @@ public class TematicaBannerCarouselServiceImpl {
 	@Autowired
 	private ImagenServiceImpl imagenService;
 
-	private BannerCarouselImagenDTO toDTO(BannerCarousel bannerCarousel, ImagenServiceImpl imagenService) {
-		return bannerCarouselMapper.toDto(bannerCarousel, imagenService);
-	}
-
 	public BannerCarouselImagenDTO addBannerCarouselToTematica(Long tematicaId, Long bannerCarouselId) {
 		var tematica = tematicaRepository.findById(tematicaId)
 				.orElseThrow(() -> new EntityNotFoundException("La tematica con id " + tematicaId + " no existe"));
@@ -47,7 +43,12 @@ public class TematicaBannerCarouselServiceImpl {
 		tematica.getBannersCarousel().add(bannerCarousel);
 		tematicaRepository.save(tematica);
 
-		return toDTO(bannerCarousel, imagenService);
+		BannerCarouselImagenDTO dto = bannerCarouselMapper.toDto(bannerCarousel);
+
+		List<ImagenDTO> imagenesInmobiliariaDtos = imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, dto.getId());
+		dto.setImagenes(imagenesInmobiliariaDtos);
+
+		return dto;
 	}
 
 	public BannerCarouselImagenDTO deleteBannerCarouselToTematica(Long tematicaId, Long bannerCarouselId) {
@@ -60,7 +61,12 @@ public class TematicaBannerCarouselServiceImpl {
 		tematica.getBannersCarousel().remove(bannerCarousel);
 		tematicaRepository.save(tematica);
 
-		return toDTO(bannerCarousel, imagenService);
+		BannerCarouselImagenDTO dto = bannerCarouselMapper.toDto(bannerCarousel);
+
+		List<ImagenDTO> imagenesInmobiliariaDtos = imagenService.getImagenes(EntidadImagen.BANNER_CAROUSEL, dto.getId());
+		dto.setImagenes(imagenesInmobiliariaDtos);
+
+		return dto;
 	}
 
 	public List<BannerCarouselImagenDTO> findBannersCarouselTematica(Long tematicaId) {
@@ -68,16 +74,20 @@ public class TematicaBannerCarouselServiceImpl {
 				.orElseThrow(() -> new EntityNotFoundException("La tematica con id " + tematicaId + " no existe"));
 
 		List<BannerCarousel> bannersCarousel = new ArrayList<>(tematica.getBannersCarousel());
+		List<BannerCarouselImagenDTO> dtos = bannerCarouselMapper.toDtoList(bannersCarousel);
 
-		List<Long> ids = bannersCarousel.stream()
-				.map(BannerCarousel::getId)
+		List<Long> ids = dtos.stream()
+				.map(dto -> dto.getId())
+				.distinct()
 				.toList();
 
-		Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER_CAROUSEL,
-				ids);
+		Map<Long, List<ImagenDTO>> imagenesMap = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER_CAROUSEL, ids);
 
-		return bannerCarouselMapper.toDtoBulk(bannersCarousel, mapaImagenes);
+		for (BannerCarouselImagenDTO dto : dtos) {
+			dto.setImagenes(imagenesMap.getOrDefault(dto.getId(), List.of()));
+		}
 
+		return dtos;
 	}
 
 	public List<BannerCarouselIdDTO> findIdsBannersCarouselTematica(Long tematicaId) {
