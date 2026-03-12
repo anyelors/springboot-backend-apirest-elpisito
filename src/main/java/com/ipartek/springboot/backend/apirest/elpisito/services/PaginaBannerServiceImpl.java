@@ -33,10 +33,6 @@ public class PaginaBannerServiceImpl {
     @Autowired
     private ImagenServiceImpl imagenService;
 
-    private BannerImagenDTO toDTO(Banner banner, ImagenServiceImpl imagenService) {
-        return bannerMapper.toDto(banner, imagenService);
-    }
-
     public BannerImagenDTO addBannerToPagina(Long paginaId, Long bannerId) {
         var pagina = paginaRepository.findById(paginaId).orElseThrow(() -> new EntityNotFoundException("La pagina con id " + paginaId + " no existe"));
         var banner = bannerRepository.findById(bannerId).orElseThrow(() -> new EntityNotFoundException("El banner con id " + bannerId + " no existe"));
@@ -44,7 +40,12 @@ public class PaginaBannerServiceImpl {
         pagina.getBannersPagina().add(banner);
         paginaRepository.save(pagina);
 
-        return toDTO(banner, imagenService);
+        BannerImagenDTO dto = bannerMapper.toDto(banner);
+
+		List<ImagenDTO> imagenesDtos = imagenService.getImagenes(EntidadImagen.BANNER, dto.getId());
+		dto.setImagenes(imagenesDtos);
+
+		return dto;
     }
 
     public BannerImagenDTO deleteBannerToPagina(Long paginaId, Long bannerId) {
@@ -54,21 +55,31 @@ public class PaginaBannerServiceImpl {
         pagina.getBannersPagina().remove(banner);
         paginaRepository.save(pagina);
 
-        return toDTO(banner, imagenService);
+        BannerImagenDTO dto = bannerMapper.toDto(banner);
+
+		List<ImagenDTO> imagenesDtos = imagenService.getImagenes(EntidadImagen.BANNER, dto.getId());
+		dto.setImagenes(imagenesDtos);
+
+		return dto;
     }
 
     public List<BannerImagenDTO> findBannersPagina(Long paginaId) {
         var pagina = paginaRepository.findById(paginaId).orElseThrow(() -> new EntityNotFoundException("La pagina con id " + paginaId + " no existe"));
 
         List<Banner> banners = new ArrayList<>(pagina.getBannersPagina());
+        List<BannerImagenDTO> dtos = bannerMapper.toDtoList(banners);
 
         List<Long> ids = banners.stream()
                         .map(Banner::getId)
                         .toList();
 
-        Map<Long, List<ImagenDTO>> mapaImagenes = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
+        Map<Long, List<ImagenDTO>> imagenesMap = imagenService.getImagenesPorEntidadBulk(EntidadImagen.BANNER, ids);
 
-        return bannerMapper.toDtoBulk(banners, mapaImagenes);
+		for (BannerImagenDTO dto : dtos) {
+			dto.setImagenes(imagenesMap.getOrDefault(dto.getId(), List.of()));
+		}
+
+		return dtos;
         
     }
 
