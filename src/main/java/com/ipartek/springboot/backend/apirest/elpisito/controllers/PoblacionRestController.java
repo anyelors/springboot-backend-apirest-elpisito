@@ -28,7 +28,7 @@ public class PoblacionRestController {
 		return ResponseEntity.ok(poblacionService.findAll());
 	}
 
-	@GetMapping("/poblaciones-activos/{active}")
+	@GetMapping("/poblaciones-activas/{active}")
 	public ResponseEntity<List<Poblacion>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(poblacionService.findAllByActivo(active));
 	}

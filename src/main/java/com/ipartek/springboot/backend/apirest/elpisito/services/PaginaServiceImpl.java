@@ -13,10 +13,10 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class PaginaServiceImpl implements GeneralService<Pagina> {
 
-    @Autowired
-    private PaginaRepository paginaRepository;
+	@Autowired
+	private PaginaRepository paginaRepository;
 
-    @Override
+	@Override
 	public List<Pagina> findAll() {
 		return paginaRepository.findAll();
 	}
@@ -31,6 +31,10 @@ public class PaginaServiceImpl implements GeneralService<Pagina> {
 		return paginaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La página con id " + id + " no existe"));
 	}
 
+	public Pagina findByNombre(String nombre) {
+		return paginaRepository.findByNombre(nombre).orElseThrow(() -> new EntityNotFoundException("La página con nombre " + nombre + " no existe"));
+	}
+
 	@Override
 	public Pagina save(Pagina objeto) {
 		return paginaRepository.save(objeto);
@@ -38,14 +42,14 @@ public class PaginaServiceImpl implements GeneralService<Pagina> {
 
 	@Override
 	public Pagina deleteById(Long id) {
-		Pagina pagina = findById(id); 
-		
-		if (pagina.getActivo().equals(1))
-            pagina.setActivo(0);
-        else
-            pagina.setActivo(1);
+		Pagina pagina = findById(id);
 
-        return paginaRepository.save(pagina);
+		if (pagina.getActivo().equals(1))
+			pagina.setActivo(0);
+		else
+			pagina.setActivo(1);
+
+		return paginaRepository.save(pagina);
 
 	}
 

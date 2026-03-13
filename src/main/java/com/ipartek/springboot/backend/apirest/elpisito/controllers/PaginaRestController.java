@@ -38,6 +38,11 @@ public class PaginaRestController {
 		return ResponseEntity.ok(paginaService.findById(id));
 	}
 
+	@GetMapping("/paginaid/{nombre}")
+	public ResponseEntity<Pagina> findByNombre(@PathVariable String nombre) {
+		return ResponseEntity.ok(paginaService.findByNombre(nombre));
+	}
+
 	@PostMapping("/pagina")
 	public ResponseEntity<Pagina> create(@RequestBody Pagina pagina) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(paginaService.save(pagina));
