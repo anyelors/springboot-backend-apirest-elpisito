@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.TematicaDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Tematica;
 import com.ipartek.springboot.backend.apirest.elpisito.services.TematicaServiceImpl;
 
@@ -24,8 +25,8 @@ public class TematicaRestController {
 	private TematicaServiceImpl tematicaService;
 
 	@GetMapping("/tematicas")
-	public ResponseEntity<List<Tematica>> findAll() {
-		return ResponseEntity.ok(tematicaService.findAll());
+	public ResponseEntity<List<TematicaDTO>> findAll() {
+		return ResponseEntity.ok(tematicaService.findAllDto());
 	}
 
 	@GetMapping("/tematicas-activas/{active}")

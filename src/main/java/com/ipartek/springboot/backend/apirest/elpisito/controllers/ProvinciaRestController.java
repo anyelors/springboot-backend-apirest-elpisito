@@ -28,7 +28,7 @@ public class ProvinciaRestController {
 		return ResponseEntity.ok(provinciaService.findAll());
 	}
 
-	@GetMapping("/provincias-activos/{active}")
+	@GetMapping("/provincias-activas/{active}")
 	public ResponseEntity<List<Provincia>> findAllActivo(@PathVariable Integer active) {
 		return ResponseEntity.ok(provinciaService.findAllByActivo(active));
 	}

@@ -1,5 +1,9 @@
 package com.ipartek.springboot.backend.apirest.elpisito.dtos;
 
+import java.util.List;
+
+import com.ipartek.springboot.backend.apirest.elpisito.entities.BannerCarousel;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +21,7 @@ public class TematicaDTO {
 	private String nombre;
 	private Integer actual;
 	private Integer activo;
+	private List<BannerCarousel> bannersCarousel;
 	private Integer nroBanners;
 
 }

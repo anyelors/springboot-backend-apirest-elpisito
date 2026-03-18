@@ -6,38 +6,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ipartek.springboot.backend.apirest.elpisito.dtos.TematicaDTO;
 import com.ipartek.springboot.backend.apirest.elpisito.entities.Tematica;
+import com.ipartek.springboot.backend.apirest.elpisito.mappers.TematicaMapper;
 import com.ipartek.springboot.backend.apirest.elpisito.repositories.TematicaRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class TematicaServiceImpl implements GeneralService<Tematica> {
+public class TematicaServiceImpl {
 
 	@Autowired
 	private TematicaRepository tematicaRepository;
 
-	@Override
-	public List<Tematica> findAll() {
-		return tematicaRepository.findAll();
+	@Autowired
+	private TematicaMapper tematicaMapper;
+
+	public List<TematicaDTO> findAllDto() {
+		List<Tematica> tematicas = tematicaRepository.findAll();
+		List<TematicaDTO> tematicaDTOs = tematicaMapper.toDtoList(tematicas);
+
+		for (TematicaDTO tematicaDTO : tematicaDTOs) {
+			tematicaDTO.setNroBanners(tematicaDTO.getBannersCarousel().size());
+		}
+
+		return tematicaDTOs;
 	}
 
-	@Override
 	public List<Tematica> findAllByActivo(Integer active) {
 		return tematicaRepository.findAllByActivo(active);
 	}
 
-	@Override
 	public Tematica findById(Long id) {
 		return tematicaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("La temática con id " + id + " no existe"));
 	}
 
-	@Override
 	public Tematica save(Tematica objeto) {
 		return tematicaRepository.save(objeto);
 	}
 
-	@Override
 	public Tematica deleteById(Long id) {
 		Tematica tematica = findById(id);
 

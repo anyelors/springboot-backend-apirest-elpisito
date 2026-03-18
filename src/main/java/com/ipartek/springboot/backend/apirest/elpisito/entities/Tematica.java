@@ -1,5 +1,7 @@
 package com.ipartek.springboot.backend.apirest.elpisito.entities;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -44,7 +46,7 @@ public class Tematica {
 	@ManyToMany
 	@JoinTable(name = "tematica_bannercarousel", joinColumns = { @jakarta.persistence.JoinColumn(name = "tematica_id") }, inverseJoinColumns = {
 			@jakarta.persistence.JoinColumn(name = "banner_carousel_id") })
-	private java.util.Set<BannerCarousel> bannersCarousel;
+	private Set<BannerCarousel> bannersCarousel;
 
 	@PrePersist
 	public void prePersist() {
